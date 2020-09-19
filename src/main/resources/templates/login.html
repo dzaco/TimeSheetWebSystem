@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+<th:block th:replace="fragments/starter :: head"> </th:block>
+<body>
+
+<main role="main" class="jumbotron">
+    <div class="login-container">
+        <form action="/login" method="post" class="form-signin">
+            <div class="logo"><img th:src="@{/img/transparent-logo.png}" /></div>
+            <h1 class="h3 mb-3 font-weight-normal">Logowanie</h1>
+
+            <label for="inputEmail" class="sr-only">Adres email</label>
+            <input type="email" id="inputEmail" name="inputEmail" class="form-control" placeholder="Adres email" required="" autofocus="">
+
+            <label for="inputPassword" class="sr-only">Hasło</label>
+            <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Hasło" required="">
+
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Zaloguj</button>
+            <a>Reset hasła</a>
+        </form>
+    </div>
+</main>
+
+<th:block th:replace="fragments/starter :: js"> </th:block>
+</body>
+</html>

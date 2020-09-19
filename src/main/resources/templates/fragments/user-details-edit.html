@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="content">
+    <div class="container">
+        <form action="#" th:action='${"/users/get/"+ user.getId() +"/edit"}' th:object="${userForm}" method="post">
+
+            <div class="name-header">
+                <div class="circ float-left">
+                    <div th:text="${user.getInitials()}" class="circ-initials">AN</div>
+                </div>
+                <div th:text='${user.getFirstName() + " " + user.getLastName()}' class="name-label">Name</div>
+                <span th:text="${user.isActive()} ? '' : 'Zwolniony'" colspan="2" style="color:red;"
+                      class="name-label"></span>
+
+                <button type="button" class="btn btn-outline-danger  float-right" data-toggle="modal"
+                        data-target="#exampleModal"><i class="icon-trash"></i>Usuń
+                </button>
+                <button type="submit" class="btn btn-outline-success float-right"><i class="icon-floppy"></i>Zapisz</button>
+            </div>
+
+            <div class="float-none"></div>
+            <br><br>
+            <table class="table">
+                <tbody>
+                <tr>
+                    <td>Numer ID:</td>
+                    <td th:text="${user.getId()}"></td>
+                </tr>
+
+                <tr>
+                    <td>Imię i Nazwisko:</td>
+                    <td class="input-group form-inline">
+                        <input class="form-control form-control-sm" type="text" th:value="${user.getFirstName()}"
+                               name="firstName">
+                        <input class="form-control form-control-sm" type="text" th:value="${user.getLastName()}"
+                               name="lastName">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Email:</td>
+                    <td>
+                        <input class="form-control form-control-sm" type="text" th:value="${user.getEmail()}"
+                               name="email">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Dział:</td>
+                    <td>
+                        <select class="form-control form-control-sm" name="departmentId">
+                            <option th:each="department : ${departments}"
+                                    th:value="${department.getId()}" th:text="${department.getName()}"
+                                    th:selected="${department.getId() == user.getDepartment().getId()}"></option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Stanowisko:</td>
+                    <td>
+                        <input class="form-control form-control-sm" type="text" th:value="${user.getPosition()}"
+                               name="position">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Uprawnienia:</td>
+                    <td>
+                        <select class="form-control form-control-sm" name="role">
+                            <option th:each="role : ${roles}"
+                                    th:value="${role}" th:text="${role}"
+                                    th:selected="${role.equals( user.getRole() )}"></option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Rodzaj umowy:</td>
+                    <td>
+                        <select class="form-control form-control-sm" name="contractId">
+                            <option th:each="contract : ${contracts}"
+                                    th:value="${contract.getId()}" th:text="${contract.getName()}"
+                                    th:selected="${contract.getId() == user.getContract().getId()}"></option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Wymiar godzin:</td>
+                    <td>
+                        <input class="form-control form-control-sm" type="text" th:value='${user.getEmploymentTime()}'
+                               name="employmentTime">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+
+        <!-- Modal -->
+        <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Uwaga!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body"
+                         th:text='${"Czy na pewno chcesz dezaktywować pracownika " + user.getId() + ": " + user.getFirstName() + " " + user.getLastName()}'>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Wróć</button>
+                        <a th:href='${"/users/delete/" + user.getId()}' role="button" class="btn btn-danger"><i
+                                class="icon-trash"></i>Usuń</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

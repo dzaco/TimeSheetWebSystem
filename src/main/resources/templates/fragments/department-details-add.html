@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+
+<head lang="pl">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:fragment="content">
+    <div class="container">
+
+        <form action="#" th:action='${"/departments/add"}' th:object="${departmentForm}" method="post">
+            <div class="name-header">
+                <div class="circ float-left">
+                    <div class="circ-initials">D</div>
+                </div>
+                <div th:text='${thisDepartment.getName()}' class="name-label">Name</div>
+                <button type="button" class="btn btn-outline-danger  float-right" data-toggle="modal"
+                        data-target="#exampleModal"><i class="icon-trash"></i>Usuń
+                </button>
+                <button type="submit" class="btn btn-outline-success float-right"><i class="icon-floppy"></i>Zapisz</button>
+            </div>
+            <div class="float-none"></div>
+            <br><br>
+
+            <table class="table">
+                <tbody>
+                <tr>
+                    <td><i class="icon-sort-numeric"></i>Numer ID:</td>
+                    <td th:text="${thisDepartment.getId()}"></td>
+                </tr>
+
+                <tr>
+                    <td><i class="icon-sitemap"></i>Nazwa:</td>
+                    <td>
+                        <input class="form-control form-control-sm" type="text" th:value="${thisDepartment.getName()}"
+                               name="name">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><i class="icon-user-circle-o"></i>Dyrektor:</td>
+                    <td>
+                        <!--                        <a th:href='${"users/get/" + department.getSuperior()}'></a>-->
+                        <select class="form-control form-control-sm" name="superiorId">
+                            <option th:each="user : ${users}"
+                                    th:value="${user.getId()}" th:text="${user.getName()}"
+                                    th:selected="${user.getId() == thisDepartment.getSuperior().getId()}"></option>
+                        </select>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="content">
+    <div class="container">
+        <form action="#" th:action='${"/users/add"}' th:object="${userForm}" method="post">
+
+            <div class="name-header">
+                <div class="circ float-left">
+                    <div class="circ-initials">AN</div>
+                </div>
+                <div class="name-label">Name</div>
+
+                <button type="submit" class="btn btn-outline-success float-right">Zapisz</button>
+            </div>
+            <div class="float-none"></div>
+            <br><br>
+            <table class="table">
+                <tbody>
+                <tr>
+                    <td>Numer ID:</td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>Imię i Nazwisko:</td>
+                    <td class="input-group form-inline">
+                        <input class="form-control form-control-sm" type="text"
+                               name="firstName">
+                        <input class="form-control form-control-sm" type="text"
+                               name="lastName">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Email:</td>
+                    <td>
+                        <input class="form-control form-control-sm" type="text"
+                               name="email">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Hasło:</td>
+                    <td>
+                        <input class="form-control form-control-sm" type="text"
+                               name="password">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Dział:</td>
+                    <td>
+                        <select class="form-control form-control-sm" name="departmentId">
+                            <option th:each="department : ${departments}"
+                                    th:value="${department.getId()}" th:text="${department.getName()}"></option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Stanowisko:</td>
+                    <td>
+                        <input class="form-control form-control-sm" type="text"
+                               name="position">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Uprawnienia:</td>
+                    <td>
+                        <select class="form-control form-control-sm" name="role">
+                            <option th:each="role : ${roles}"
+                                    th:value="${role}" th:text="${role}"></option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Rodzaj umowy:</td>
+                    <td>
+                        <select class="form-control form-control-sm" name="contractId">
+                            <option th:each="contract : ${contracts}"
+                                    th:value="${contract.getId()}" th:text="${contract.getName()}"></option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Wymiar godzin:</td>
+                    <td>
+                        <input class="form-control form-control-sm" type="text"
+                               name="employmentTime">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>
+</body>
+</html>

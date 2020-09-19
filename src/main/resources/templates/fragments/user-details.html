@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+
+<head lang="pl">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:fragment="content">
+    <div class="container">
+        <div class="name-header">
+            <div class="circ float-left">
+                <div th:text="${user.getInitials()}" class="circ-initials">AN</div>
+            </div>
+            <div th:text='${user.getFirstName() + " " + user.getLastName()}' class="name-label">Name</div>
+            <span th:unless="${user.isActive()}" class="name-label" style="color:red;">Zwolniony!</span>
+
+            <a th:href='${user.getId() + "/edit"}' role="button" class="btn btn-outline-success float-right"><i
+                    class="icon-edit"></i> Edytuj</a>
+        </div>
+        <div class="float-none"></div>
+        <br><br>
+
+        <table class="table">
+            <tbody>
+            <tr>
+                <td><i class="icon-sort-numeric"></i>Numer ID:</td>
+                <td th:text="${user.getId()}"></td>
+            </tr>
+
+            <tr>
+                <td><i class="icon-user"></i>Imię i Nazwisko:</td>
+                <td th:text='${user.getFirstName() + " " + user.getLastName() }'></td>
+            </tr>
+
+            <tr>
+                <td><i class="icon-at"></i>Email:</td>
+                <td>
+                    <a th:href='${"mailto:" + user.getEmail()}' th:text="${user.getEmail()}"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td><i class="icon-sitemap"></i>Dział:</td>
+                <td>
+                    <span>
+                        <a th:href='${"/departments/get/" + user.getDepartment().getId()}'
+                           th:text="${user.getDepartment()}"></a>
+                        <a th:if="${user.getId() != user.getDepartment().getSuperior().getId()}"
+                           th:href='${"/users/get/" + user.getDepartment().getSuperior().getId()}'
+                           th:text='${" (Kierownik: " + user.getDepartment().getSuperior().getName() + ")"}'></a>
+                        <span th:unless="${user.getId() != user.getDepartment().getSuperior().getId()}"> (Kierownik tego działu)</span>
+                    </span>
+                </td>
+            </tr>
+
+            <tr>
+                <td><i class="icon-suitcase"></i>Stanowisko:</td>
+                <td th:text="${user.getPosition()}"></td>
+            </tr>
+
+            <tr>
+                <td><i class="icon-key"></i>Uprawnienia:</td>
+                <td th:text="${user.getRole()}"></td>
+            </tr>
+
+            <tr>
+                <td><i class="icon-doc-text-inv"></i>Rodzaj umowy:</td>
+                <td th:text="${user.getContract()}"></td>
+            </tr>
+
+            <tr>
+                <td><i class="icon-stopwatch"></i>Wymiar godzin:</td>
+                <td th:text='${user.getEmploymentTime() + " h" }'>Wymiar godzin</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+<!--    TimeSheets  -->
+    <th:block th:replace="fragments/user-timesheets:: content" > </th:block>
+</div>
+
+</body>
+</html>
