@@ -5,12 +5,17 @@ import com.epstein.entity.User;
 import com.epstein.entity.UserForm;
 import com.epstein.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService  implements UserDetailsService {
@@ -126,6 +131,12 @@ public class UserService  implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = this.userRepository.findByEmail(email);
-        return user;
+        if(user == null) throw new UsernameNotFoundException("Nieprawidłowy email lub hasło");
+
+        return new org.springframework.security.core.userdetails.User( user.getEmail(), user.getPassword(), this.mapRolesToAuthorities(user.getRole()) );
+    }
+
+    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(String role) {
+        return Collections.singleton(new SimpleGrantedAuthority(role));     //ToDo user moze miec wiecej role - trzeba dodac nowa tablice user_roles
     }
 }
