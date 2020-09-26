@@ -10,15 +10,19 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class UserService  implements UserDetailsService {
+
+    private User logged;
 
     @Autowired
     private UserRepository userRepository;
@@ -27,8 +31,15 @@ public class UserService  implements UserDetailsService {
     @Autowired
     private ContractService contractService;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     public User saveUser(User user) {
         return userRepository.save(user);
+    }
+
+    public User getLogged() {
+        return logged;
     }
 
     public List<User> getUsers() {
@@ -90,7 +101,7 @@ public class UserService  implements UserDetailsService {
         user.setFirstName(form.getFirstName());
         user.setLastName(form.getLastName());
         user.setEmail(form.getEmail());
-        user.setPassword(form.getPassword());
+        user.setPassword( this.passwordEncoder.encode(form.getPassword()) );
         user.setDepartment( departmentService.getDepartmentById(form.getDepartmentId()) );
         user.setPosition(form.getPosition());
         user.setRole(form.getRole());
@@ -133,10 +144,20 @@ public class UserService  implements UserDetailsService {
         User user = this.userRepository.findByEmail(email);
         if(user == null) throw new UsernameNotFoundException("Nieprawidłowy email lub hasło");
 
+        this.logged = user;
         return new org.springframework.security.core.userdetails.User( user.getEmail(), user.getPassword(), this.mapRolesToAuthorities(user.getRole()) );
     }
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(String role) {
         return Collections.singleton(new SimpleGrantedAuthority(role));     //ToDo user moze miec wiecej role - trzeba dodac nowa tablice user_roles
+    }
+
+    public void passwordReset( int id) {
+        String password = this.passwordEncoder.encode("password");
+        Optional<User> user = userRepository.findById(id);
+        if(user.isPresent()) {
+            user.get().setPassword(password);
+            this.updateUser(user.get());
+        }
     }
 }

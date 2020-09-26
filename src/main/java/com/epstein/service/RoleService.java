@@ -1,5 +1,6 @@
 package com.epstein.service;
 
+import com.epstein.entity.User;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -22,5 +23,9 @@ public class RoleService {
     }
     public static String[] getRolesArray() {
         return new String[]{"USER","MANAGER", "ACCOUNTANT", "CONTRACT", "ADMIN"};
+    }
+
+    public static String[] getHiRole() {
+        return new String[] {MANAGER, ACCOUNTANT, ADMIN};
     }
 }

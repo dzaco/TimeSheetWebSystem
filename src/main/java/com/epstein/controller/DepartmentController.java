@@ -19,6 +19,7 @@ public class DepartmentController {
     @GetMapping("/get")
     public String getDepartments(Model model) {
         model.addAttribute("departments", departmentService.getDepartments());
+        model.addAttribute("logged", this.userService.getLogged());
         model.addAttribute("page", "departments");
         return "base";
     }
@@ -29,6 +30,7 @@ public class DepartmentController {
         model.addAttribute("department", department);
         model.addAttribute("users", departmentService.getUsersInDepartment(department.getId(), 1));
         model.addAttribute("userHeader", "Lista Pracowników w Dziale");
+        model.addAttribute("logged", this.userService.getLogged());
         model.addAttribute("page", "department-details");
         return "base";
     }
@@ -36,14 +38,15 @@ public class DepartmentController {
     @GetMapping("/get/{id}/edit")
     public String getEditDepartmentById(@PathVariable int id, Model model) {
         model.addAttribute("thisDepartment", departmentService.getDepartmentById(id));      // edytowany wydział
-        //model.addAttribute("departments", departmentService.getDepartments());              // lista wszystkich Wydziałów
         model.addAttribute("users", departmentService.getUsersInDepartment(id,1));    // lista pracowników w tym wydziale - możliwość zostania dyrektorem
+        model.addAttribute("logged", this.userService.getLogged());
         model.addAttribute("page", "department-details-edit");
         return "base";
     }
 
     @PostMapping("/get/{id}/edit")
     public String postEditDepartment(@PathVariable int id, @ModelAttribute(value="departmentForm") DepartmentForm departmentForm, Model model) {
+        model.addAttribute("logged", this.userService.getLogged());
         Department department = this.departmentService.getDepartmentFromForm(departmentForm);
         this.departmentService.updateDepartmentAndSuperiorRole(department);
         return this.getDepartmentById(id,model);
@@ -51,6 +54,7 @@ public class DepartmentController {
 
     @GetMapping("/add")
     public String addDepartment(Model model) {
+        model.addAttribute("logged", this.userService.getLogged());
         Department department = departmentService.getSample();
         model.addAttribute("thisDepartment" , department);
         model.addAttribute("departmentForm", new DepartmentForm());
@@ -61,6 +65,7 @@ public class DepartmentController {
 
     @PostMapping("/add")
     public RedirectView postAddingDepartment(@ModelAttribute DepartmentForm departmentForm, Model model) {
+        model.addAttribute("logged", this.userService.getLogged());
         this.departmentService.updateDepartment( this.departmentService.getDepartmentFromForm(departmentForm));
         return new RedirectView("/departments/get");
     }

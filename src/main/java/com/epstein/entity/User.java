@@ -3,8 +3,8 @@ package com.epstein.entity;
 import javax.persistence.*;
 import java.util.ArrayList;
 
-@Entity @Table(name = "users")
-public class User extends org.springframework.security.core.userdetails.User {
+@Entity @Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id") private int user_id;
@@ -28,7 +28,6 @@ public class User extends org.springframework.security.core.userdetails.User {
 
 
     public User() {
-        super("name", "password", new ArrayList<>());
 //        this.firstName = "firstName";
 //        this.lastName = "lastName";
 //        this.email = "email";

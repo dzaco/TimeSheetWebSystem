@@ -11,7 +11,8 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User,Integer> {
 
-    User findByEmail(String email);
+    //@Query(value = "SELECT * FROM users u where u.email = :email" , nativeQuery = true)
+    User findByEmail(@Param("email") String email);
 
     @Query(value = "SELECT * FROM USERS u WHERE u.active = 1", nativeQuery = true)
     List<User> findAllActive();

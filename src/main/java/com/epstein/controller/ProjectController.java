@@ -19,6 +19,8 @@ public class ProjectController {
     public String getProjects(Model model) {
         model.addAttribute("projects", this.projectService.getActiveProjects());
         model.addAttribute("page" , "projects");
+        model.addAttribute("logged", this.userService.getLogged());
+
         return "base";
     }
 
@@ -29,6 +31,7 @@ public class ProjectController {
         model.addAttribute("project", project);
         model.addAttribute("users", this.userService.getUserInProject(project.getId()));
         model.addAttribute("userHeader", "Lista Pracowników w Projekcie");
+        model.addAttribute("logged", this.userService.getLogged());
         model.addAttribute("page", "project-details");
         return "base";
     }
@@ -38,6 +41,7 @@ public class ProjectController {
         Project project = this.projectService.getProjectById(id);
         model.addAttribute("project", project);
         model.addAttribute("users", this.userService.getUserInProject(project.getId()));
+        model.addAttribute("logged", this.userService.getLogged());
 
         //TODO mozliwosc dodania i usuwania pracownikow z projektu
         model.addAttribute("page", "project-details-edit");
@@ -46,6 +50,7 @@ public class ProjectController {
 
     @PostMapping("/get/{id}/edit")
     public String postEditProject(@PathVariable int id, @ModelAttribute(value="postProject") Project postProject, Model model) {
+        model.addAttribute("logged", this.userService.getLogged());
         this.projectService.update(postProject);
         return this.getProjectById(id,model);
     }
@@ -53,12 +58,14 @@ public class ProjectController {
     @GetMapping("/add")
     public String addProject(Model model) {
         model.addAttribute("project" , new Project());
+        model.addAttribute("logged", this.userService.getLogged());
         model.addAttribute("page", "project-details-add");
         return "base";
     }
 
     @PostMapping("/add")
     public RedirectView postAddingProject(@ModelAttribute Project postProject, Model model) {
+        model.addAttribute("logged", this.userService.getLogged());
         this.projectService.update( postProject );
         return new RedirectView("/projects/get");
     }

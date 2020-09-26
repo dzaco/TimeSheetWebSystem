@@ -8,6 +8,7 @@ import com.epstein.service.DepartmentService;
 import com.epstein.service.RoleService;
 import com.epstein.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,8 @@ public class UserController {
         List<User> users = userService.getActiveUsers();
         model.addAttribute("users", users);
         model.addAttribute("page", "users");
+        model.addAttribute("logged", this.userService.getLogged());
+
         return "base";
     }
 
@@ -37,6 +40,8 @@ public class UserController {
         User user = userService.getUserById(id);
         model.addAttribute("user", user);
         model.addAttribute("page", "user-details");
+        model.addAttribute("logged", this.userService.getLogged());
+
         return "base";
     }
 
@@ -48,6 +53,7 @@ public class UserController {
         model.addAttribute("contracts", contractService.getContracts());
         model.addAttribute("roles", RoleService.getRoles() );
         model.addAttribute("userForm" , new UserForm() );
+        model.addAttribute("logged", this.userService.getLogged());
 
         model.addAttribute("page", "user-details-edit");
         return "base";
@@ -56,6 +62,8 @@ public class UserController {
     @PostMapping(value = "/get/{id}/edit")
     public String handleEditUserForm(@PathVariable int id, @ModelAttribute(value="userForm") UserForm userForm, Model model) {
         this.userService.updateUser( userService.getUserFromForm(userForm) );
+        model.addAttribute("logged", this.userService.getLogged());
+
         return this.getUsers(model);
     }
 
@@ -67,6 +75,7 @@ public class UserController {
         model.addAttribute("contracts", contractService.getContracts());
         model.addAttribute("roles", RoleService.getRoles() );
         model.addAttribute("userForm" , new UserForm() );
+        model.addAttribute("logged", this.userService.getLogged());
 
         model.addAttribute("page", "user-details-add");
         return "base";
@@ -75,6 +84,7 @@ public class UserController {
     @PostMapping("/add")
     public RedirectView handleAddUserForm(@ModelAttribute UserForm userForm, Model model) {
         this.userService.updateUser( userService.getUserFromForm(userForm,true));
+        model.addAttribute("logged", this.userService.getLogged());
         return new RedirectView("/users/get");
     }
 
@@ -82,6 +92,8 @@ public class UserController {
     public RedirectView deleteUser(@PathVariable int id, Model model) {
         this.userService.deactivateUser(id);
         Department department = departmentService.getDepartmentOfSupervisor(id);
+        model.addAttribute("logged", this.userService.getLogged());
+
         if(department == null)
             return new RedirectView("/users/get");
         else
