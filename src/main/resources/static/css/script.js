@@ -8,5 +8,8 @@ $(document).ready(function(){
     });
   });
 
+// ustawianie dzisiejszej daty w kalendarzu
+$('#datePicker').val(new Date().toDateInputValue());
+
 
 });

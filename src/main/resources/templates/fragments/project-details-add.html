@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+
+<head lang="pl">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:fragment="content">
+    <div class="container">
+        <div class="name-header">
+            <div class="circ float-left">
+                <div class="circ-initials"><i class="icon-cube"></i></div>
+            </div>
+            <div th:text='${project.getName()}' class="name-label">Name</div>
+            <a th:href='${project.getId() + "/edit"}' role="button" class="btn btn-outline-success float-right"><i
+                    class="icon-edit"></i> Edytuj</a>
+        </div>
+        <div class="float-none"></div>
+        <br><br>
+
+        <table class="table">
+            <tbody>
+            <tr>
+                <td><i class="icon-sort-numeric"></i>Numer ID:</td>
+                <td th:text="${project.getId()}"></td>
+            </tr>
+            <tr>
+                <td><i class="icon-sort-numeric"></i>Kod:</td>
+                <td th:text="${project.getCode()}"></td>
+            </tr>
+            <tr>
+                <td><i class="icon-cube"></i>Nazwa:</td>
+                <td th:text='${project.getName()}'></td>
+            </tr>
+
+            <tr>
+                <td><i class="icon-user-circle-o"></i>Kierownik:</td>
+                <td>
+                    <a th:href='${"users/get/" + project.getManager()}'
+                       th:text="${project.getManager()}"></a>
+                </td>
+            </tr>
+
+            <tr>
+                <td><i class="icon-clock-1"></i>Data rozpoczęcia:</td>
+                <td th:text='${project.getStartDate()}'></td>
+            </tr>
+
+            <tr>
+                <td><i class="icon-clock"></i>Data zakończenia:</td>
+                <td th:text='${project.getEndDate() != null ? project.getEndDate().toString() : "Nie określono"}'></td>
+            </tr>
+
+            <tr>
+                <td><i class="icon-comment"></i>Komentarz:</td>
+                <td th:text="${project.getOther()}"></td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container" th:include="fragments/users :: content">
+    </div>
+</div>
+
+</body>
+</html>

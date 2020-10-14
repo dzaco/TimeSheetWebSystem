@@ -127,8 +127,7 @@ public class UserService  implements UserDetailsService {
         return user;
     }
     public User getNewInstanceOfUser() {
-        User user = userRepository.save(this.sampleUser());
-        return user;
+        return userRepository.save(this.sampleUser());
     }
 
     public List<User> getUsersInDepartment(int departmentId, int active) {
@@ -145,7 +144,10 @@ public class UserService  implements UserDetailsService {
         if(user == null) throw new UsernameNotFoundException("Nieprawidłowy email lub hasło");
 
         this.logged = user;
-        return new org.springframework.security.core.userdetails.User( user.getEmail(), user.getPassword(), this.mapRolesToAuthorities(user.getRole()) );
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(),
+                user.getPassword(),
+                this.mapRolesToAuthorities(user.getRole()) );
     }
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(String role) {

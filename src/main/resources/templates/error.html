@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+<th:block th:replace="fragments/starter :: head"> </th:block>
+<body>
+
+<main role="main" class="jumbotron">
+    <div class="login-container">
+        <img src="" th:src="@{/img/transparent-logo.png}" />
+        <h1 th:text="${errorTitle}" >Nieznany błąd</h1>
+        <h5 th:text="${errorText}"></h5> <br>
+        <a href="/" role="button" class="btn btn-primary float-right">Wróć!</a>
+    </div>
+</main>
+
+<th:block th:replace="fragments/starter :: js"> </th:block>
+</body>
+</html>

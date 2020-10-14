@@ -2,6 +2,7 @@ package com.epstein.controller;
 
 import com.epstein.entity.Project;
 import com.epstein.service.ProjectService;
+import com.epstein.service.RoleService;
 import com.epstein.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,38 +11,38 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Controller @RequestMapping("/projects")
-public class ProjectController {
+public class ProjectController extends IController {
 
     @Autowired private ProjectService projectService;
-    @Autowired private UserService userService;
 
     @GetMapping("/get")
-    public String getProjects(Model model) {
+    public String getAll(Model model) {
         model.addAttribute("projects", this.projectService.getActiveProjects());
         model.addAttribute("page" , "projects");
-        model.addAttribute("logged", this.userService.getLogged());
+        this.mainAttribute(model);
 
         return "base";
     }
 
 
     @GetMapping("/get/{id}")
-    public String getProjectById(@PathVariable int id, Model model) {
+    public String getById(@PathVariable int id, Model model) {
         Project project = this.projectService.getProjectById(id);
         model.addAttribute("project", project);
         model.addAttribute("users", this.userService.getUserInProject(project.getId()));
         model.addAttribute("userHeader", "Lista Pracowników w Projekcie");
-        model.addAttribute("logged", this.userService.getLogged());
+        this.mainAttribute(model);
+
         model.addAttribute("page", "project-details");
         return "base";
     }
 
     @GetMapping("/get/{id}/edit")
-    public String getEditProjectById(@PathVariable int id, Model model) {
+    public String edit(@PathVariable int id, Model model) {
         Project project = this.projectService.getProjectById(id);
         model.addAttribute("project", project);
         model.addAttribute("users", this.userService.getUserInProject(project.getId()));
-        model.addAttribute("logged", this.userService.getLogged());
+        this.mainAttribute(model);
 
         //TODO mozliwosc dodania i usuwania pracownikow z projektu
         model.addAttribute("page", "project-details-edit");
@@ -49,23 +50,26 @@ public class ProjectController {
     }
 
     @PostMapping("/get/{id}/edit")
-    public String postEditProject(@PathVariable int id, @ModelAttribute(value="postProject") Project postProject, Model model) {
-        model.addAttribute("logged", this.userService.getLogged());
+    public RedirectView postEdit(@PathVariable int id, @ModelAttribute(value="postProject") Project postProject, Model model) {
+        this.mainAttribute(model);
+
         this.projectService.update(postProject);
-        return this.getProjectById(id,model);
+        return new RedirectView("projects/get/" +id);
     }
 
     @GetMapping("/add")
-    public String addProject(Model model) {
+    public String add(Model model) {
         model.addAttribute("project" , new Project());
-        model.addAttribute("logged", this.userService.getLogged());
+        this.mainAttribute(model);
+
         model.addAttribute("page", "project-details-add");
         return "base";
     }
 
     @PostMapping("/add")
-    public RedirectView postAddingProject(@ModelAttribute Project postProject, Model model) {
-        model.addAttribute("logged", this.userService.getLogged());
+    public RedirectView postAdd(@ModelAttribute Project postProject, Model model) {
+        this.mainAttribute(model);
+
         this.projectService.update( postProject );
         return new RedirectView("/projects/get");
     }

@@ -45,7 +45,7 @@
                 <tr>
                     <td>Email:</td>
                     <td>
-                        <input class="form-control form-control-sm" type="text" th:value="${user.getEmail()}"
+                        <input class="form-control form-control-sm" type="email" th:value="${user.getEmail()}"
                                name="email">
                     </td>
                 </tr>
@@ -94,7 +94,7 @@
                 <tr>
                     <td>Wymiar godzin:</td>
                     <td>
-                        <input class="form-control form-control-sm" type="text" th:value='${user.getEmploymentTime()}'
+                        <input class="form-control form-control-sm" type="number" th:value='${user.getEmploymentTime()}'
                                name="employmentTime">
                     </td>
                 </tr>

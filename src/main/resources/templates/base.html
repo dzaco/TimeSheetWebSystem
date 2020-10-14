@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="pl">
 
-<head lang="pl">
+<head lang="pl" th:fragment="head">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -19,6 +19,8 @@
     <!--    moje linki  -->
     <link th:href="@{/css/style.css}" rel="stylesheet" />
     <link th:href="@{/fontello/css/fontello.css}" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap-datepicker/css/bootstrap-datepicker.css}"/>
+    <link th:href="@{/css/calendar.css}" rel="stylesheet" />
 </head>
 
 
@@ -26,12 +28,12 @@
 
     <main role="main" class="jumbotron">
 
-        <nav>
-            <div><img th:src="@{/img/transparent-logo.png}" /></div>
+        <nav th:fragment="nav">
+            <div><img src="" th:src="@{/img/transparent-logo.png}" /></div>
 <!--            <small style="color:#818181;">ADMIN</small>-->
             <ul class="list-group access-admin">
                 <li class="list-group-item nav-item"><a href="/"><i class="icon-home"></i>Główna</a></li>
-                <li class="list-group-item nav-item dropdown">
+                <li th:if="${roleService.getHighRolesList().contains( logged.getRole() )}" class="list-group-item nav-item dropdown">
                     <div class="btn-group">
                         <a role="button" href="/users/get"><i class="icon-users"></i>Pracownicy</a>
                         <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
@@ -43,8 +45,19 @@
                 </li>
                 <li class="list-group-item nav-item"><a href="/departments/get"><i class="icon-sitemap"></i>Działy</a></li>
                 <li class="list-group-item nav-item"><a href="/projects/get"><i class="icon-cubes"></i>Projekty</a></li>
-                <li class="list-group-item nav-item"><a href="#"><i class="icon-calendar"></i>TimeSheets</a></li>
+                <li class="list-group-item nav-item dropdown">
+<!--                    <a href="/timesheets/get"><i class="icon-calendar"></i>TimeSheets</a>-->
+                    <div class="btn-group">
+                        <a role="button" href="/timesheets/get"><i class="icon-calendar"></i>Timesheets</a>
+                        <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                        <div class="dropdown-menu">
+                            <!-- Dropdown menu links -->
+                            <a class="dropdown-item" href="/timesheets/add">Dodaj timesheet</a>
+                        </div>
+                    </div>
+                </li>
                 <li class="list-group-item nav-item"><a href="/logout"><i class="icon-off"></i>Wyloguj</a></li>
+                <li class="list-group-item nav-item"><a href="/test"><i class="icon-off"></i>Test</a></li>
             </ul>
 
         </nav>

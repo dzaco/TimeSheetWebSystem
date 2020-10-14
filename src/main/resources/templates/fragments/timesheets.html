@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="content">
+    <div class="container" id="projects">
+        <div class="form-inline">
+            <h3 class="mr-auto">Lista Timesheet'ów</h3>
+            <input class="form-control" id="filterInput" type="text" placeholder="Szukaj..">
+        </div>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Pracownik</th>
+                <th scope="col">Project</th>
+                <th scope="col">Faza</th>
+                <th scope="col">Data</th>
+                <th scope="col">Suma godzin</th>
+            </tr>
+            </thead>
+
+            <tbody id="filterTable">
+            <tr th:each="timesheet: ${timesheets}">
+
+                <td>
+                    <a th:href='${"/users/get/" + timesheet.getUser().getId()}' th:text="${timesheet.getUser()}"></a>
+                </td>
+                <td th:text="${timesheet.getProject()}"></td>
+                <td th:text="${timesheet.getStage()}"></td>
+                <td th:text="${timesheet.getMonthAndYear()}"></td>
+                <td th:text="${timesheet.getSum()}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <hr>
+        <a href="/timesheets/add" role="button" class="btn btn-success float-right">Dodaj nowy timesheet</a>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div th:fragment="content">
+
+    <div class="container" id="projects">
+
+        <table class="table" id="calendar">
+            <thead>
+                <tr>
+                    <td>Pon</td>
+                    <td>Wt</td>
+                    <td>Śr</td>
+                    <td>Czw</td>
+                    <td>Pt</td>
+                    <td>Sob</td>
+                    <td>Nd</td>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr class="week" th:each="week : ${#numbers.sequence(0,4)}">
+                    <td class="day" th:each="day : ${#numbers.sequence(0,6)}">
+                        <th:block th:if="${ (7*week + day - date.offSet() > 0) &&
+                        (7*week + day - date.offSet() <= date.getLastDay() ) }" >
+                            <small th:text='${7*week + day - date.offSet() + "." + date.getMonth().getValue()}'
+                                   class="badge badge-pill badge-secondary dateBadge"></small> <br/>
+                            <input th:if='${date.isWeekend(week, day)}' hidden
+                                   type="number" class="form-control form-control-sm" name="date" >
+                            <input th:unless='${date.isWeekend(week, day)}'
+                                   type="number" class="form-control form-control-sm" name="date" >
+                        </th:block>
+
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+</body>
+</html>

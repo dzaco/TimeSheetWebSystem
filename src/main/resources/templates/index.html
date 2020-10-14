@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="pl">
 <head>
-    <th:block th:include="fragments/starter :: head"> </th:block>
+    <th:block th:include="base :: head"> </th:block>
 </head>
 <body>
-<th:block th:include="fragments/starter :: nav"> </th:block>
-
 <main role="main" class="container">
-     <H3>strony:</H3>
-     <a href="admin/users/get">admin/users/get</a> <br>
-     <a href="test">test</a>
+     <th:block th:replace="base :: nav"> </th:block>
+    <th:block>
+        wiadomości
+    </th:block>
 </main>
     <th:block th:include="fragments/starter :: js"> </th:block>
 </body>
