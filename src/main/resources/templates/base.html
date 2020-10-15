@@ -29,7 +29,7 @@
     <main role="main" class="jumbotron">
 
         <nav th:fragment="nav">
-            <div><img src="" th:src="@{/img/transparent-logo.png}" /></div>
+            <div><img src="#" th:src="@{/img/transparent-logo.png}" /></div>
 <!--            <small style="color:#818181;">ADMIN</small>-->
             <ul class="list-group access-admin">
                 <li class="list-group-item nav-item"><a href="/"><i class="icon-home"></i>Główna</a></li>
@@ -39,7 +39,7 @@
                         <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                         <div class="dropdown-menu">
                             <!-- Dropdown menu links -->
-                            <a class="dropdown-item" href="#">Byli pracownicy</a>
+                            <a class="dropdown-item" href="/users/get-ex">Byli pracownicy</a>
                         </div>
                     </div>
                 </li>
@@ -57,7 +57,6 @@
                     </div>
                 </li>
                 <li class="list-group-item nav-item"><a href="/logout"><i class="icon-off"></i>Wyloguj</a></li>
-                <li class="list-group-item nav-item"><a href="/test"><i class="icon-off"></i>Test</a></li>
             </ul>
 
         </nav>

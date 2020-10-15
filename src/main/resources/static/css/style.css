@@ -52,7 +52,7 @@ a {
   color: inherit;
 }
 
-nav a {
+nav a , nav button::after{
   color: #818181;
 }
 

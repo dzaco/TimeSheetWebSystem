@@ -11,7 +11,7 @@
     <div class="container">
         <div class="name-header">
             <div class="circ float-left">
-                <div th:text="${user.getInitials()}" class="circ-initials">AN</div>
+                <div class="circ-initials"><i class="icon-user"></i></div>
             </div>
             <div th:text='${user.getFirstName() + " " + user.getLastName()}' class="name-label">Name</div>
             <span th:unless="${user.isActive()}" class="name-label" style="color:red;">Zwolniony!</span>

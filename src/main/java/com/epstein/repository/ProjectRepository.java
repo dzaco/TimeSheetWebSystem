@@ -9,4 +9,7 @@ import java.util.List;
 public interface ProjectRepository extends JpaRepository<Project, Integer> {
     @Query(value = "SELECT * FROM projects where end_date > now() OR end_date is null", nativeQuery = true)
     List<Project> findAllActive();
+
+    @Query(value = "SELECT * FROM projects where manager_id = :id" , nativeQuery = true)
+    List<Project> getProjectOfSupervisor(int id);
 }

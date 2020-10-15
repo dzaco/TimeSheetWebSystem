@@ -7,11 +7,11 @@
 <body>
 <div th:fragment="content">
     <div class="container">
-        <form action="#" th:action='${"/users/add"}' th:object="${userForm}" method="post">
+        <form action="#" th:action='${"/users/add"}' th:object="${userDTO}" method="post">
 
             <div class="name-header">
                 <div class="circ float-left">
-                    <div class="circ-initials">AN</div>
+                    <div class="circ-initials"><i class="icon-user"></i></div>
                 </div>
                 <div class="name-label">Name</div>
 
@@ -22,12 +22,12 @@
             <table class="table">
                 <tbody>
                 <tr>
-                    <td>Numer ID:</td>
+                    <td><i class="icon-sort-numeric"></i>Numer ID:</td>
                     <td></td>
                 </tr>
 
                 <tr>
-                    <td>Imię i Nazwisko:</td>
+                    <td><i class="icon-user"></i>Imię i Nazwisko:</td>
                     <td class="input-group form-inline">
                         <input class="form-control form-control-sm" type="text"
                                name="firstName">
@@ -37,7 +37,7 @@
                 </tr>
 
                 <tr>
-                    <td>Email:</td>
+                    <td><i class="icon-at"></i>Email:</td>
                     <td>
                         <input class="form-control form-control-sm" type="email"
                                name="email">
@@ -53,7 +53,7 @@
                 </tr>
 
                 <tr>
-                    <td>Dział:</td>
+                    <td><i class="icon-sitemap"></i>Dział:</td>
                     <td>
                         <select class="form-control form-control-sm" name="departmentId">
                             <option th:each="department : ${departments}"
@@ -63,7 +63,7 @@
                 </tr>
 
                 <tr>
-                    <td>Stanowisko:</td>
+                    <td><i class="icon-suitcase"></i>Stanowisko:</td>
                     <td>
                         <input class="form-control form-control-sm" type="text"
                                name="position">
@@ -71,7 +71,7 @@
                 </tr>
 
                 <tr>
-                    <td>Uprawnienia:</td>
+                    <td><i class="icon-key"></i>Uprawnienia:</td>
                     <td>
                         <select class="form-control form-control-sm" name="role">
                             <option th:each="role : ${roles}"
@@ -81,7 +81,7 @@
                 </tr>
 
                 <tr>
-                    <td>Rodzaj umowy:</td>
+                    <td><i class="icon-doc-text-inv"></i>Rodzaj umowy:</td>
                     <td>
                         <select class="form-control form-control-sm" name="contractId">
                             <option th:each="contract : ${contracts}"
@@ -91,7 +91,7 @@
                 </tr>
 
                 <tr>
-                    <td>Wymiar godzin:</td>
+                    <td><i class="icon-stopwatch"></i>Wymiar godzin:</td>
                     <td>
                         <input class="form-control form-control-sm" type="number"
                                name="employmentTime">

@@ -42,6 +42,8 @@ public class ProjectController extends IController {
         Project project = this.projectService.getProjectById(id);
         model.addAttribute("project", project);
         model.addAttribute("users", this.userService.getUserInProject(project.getId()));
+        model.addAttribute("allUsers", this.userService.getUsers());
+
         this.mainAttribute(model);
 
         //TODO mozliwosc dodania i usuwania pracownikow z projektu
@@ -50,11 +52,10 @@ public class ProjectController extends IController {
     }
 
     @PostMapping("/get/{id}/edit")
-    public RedirectView postEdit(@PathVariable int id, @ModelAttribute(value="postProject") Project postProject, Model model) {
-        this.mainAttribute(model);
-
-        this.projectService.update(postProject);
-        return new RedirectView("projects/get/" +id);
+    public RedirectView postEdit(@PathVariable int id, @ModelAttribute(value="project") Project project, Model model) {
+        System.out.println(project.getEndDate());
+        this.projectService.update(project);
+        return new RedirectView("/projects/get/" +id);
     }
 
     @GetMapping("/add")

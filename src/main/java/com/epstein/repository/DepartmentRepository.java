@@ -13,7 +13,7 @@ import java.util.List;
 public interface DepartmentRepository extends JpaRepository<Department,Integer> {
 
     @Query(value = "SELECT * FROM departments where superior_id = :id" , nativeQuery = true)
-    Department getDepartmentOfSupervisor(@Param("id") int id);
+    List<Department> getDepartmentOfSupervisor(@Param("id") int id);
 
     @Query(value = "Select max(department_id) + 1 From departments", nativeQuery = true)
     int lastId();

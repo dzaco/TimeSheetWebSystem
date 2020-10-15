@@ -34,8 +34,16 @@
                 <tr>
                     <td><i class="icon-sitemap"></i>Nazwa:</td>
                     <td>
-                        <input class="form-control form-control-sm" type="text" th:value="${thisDepartment.getName()}"
-                               name="name">
+                        <th:block th:if="${blockList}">
+                            <input th:if='${blockList.contains("name")}' class="form-control form-control-sm" type="text" th:value="${thisDepartment.getName()}"
+                                   name="name" disabled>
+                            <input th:unless='${blockList.contains("name")}' class="form-control form-control-sm" type="text" th:value="${thisDepartment.getName()}"
+                                   name="name">
+                        </th:block>
+                        <th:block th:unless="${blockList}">
+                            <input class="form-control form-control-sm" type="text" th:value="${thisDepartment.getName()}"
+                                   name="name">
+                        </th:block>
                     </td>
                 </tr>
 

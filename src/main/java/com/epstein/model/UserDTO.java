@@ -1,6 +1,6 @@
-package com.epstein.entity;
+package com.epstein.model;
 
-public class UserForm {
+public class UserDTO {
 
     private int id;
     private String firstName;
@@ -14,9 +14,9 @@ public class UserForm {
     private int employmentTime;
     private boolean active;
 
-    public UserForm() {    }
+    public UserDTO() {    }
 
-    public UserForm(int id, String firstName, String lastName, String email, String password, int departmentId, String position, int contractId, String role, int employmentTime, boolean active) {
+    public UserDTO(int id, String firstName, String lastName, String email, String password, int departmentId, String position, int contractId, String role, int employmentTime, boolean active) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

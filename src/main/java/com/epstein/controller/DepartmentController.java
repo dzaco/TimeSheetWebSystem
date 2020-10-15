@@ -2,6 +2,7 @@ package com.epstein.controller;
 
 import com.epstein.entity.Department;
 import com.epstein.entity.DepartmentForm;
+import com.epstein.model.DepartmentListDTO;
 import com.epstein.service.DepartmentService;
 import com.epstein.service.RoleService;
 import com.epstein.service.UserService;
@@ -10,6 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
+
+import javax.websocket.server.PathParam;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller @RequestMapping("/departments")
 public class DepartmentController extends IController {
@@ -59,6 +64,7 @@ public class DepartmentController extends IController {
         this.departmentService.updateDepartmentAndSuperiorRole(department);
         return new RedirectView("/departments/get/" + id);
     }
+
 
     @GetMapping("/add")
     public String add(Model model) {

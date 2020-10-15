@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+
+<head lang="pl">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:fragment="content">
+    <div class="container">
+
+        <form action="#" th:action='${"/projects/get/"+ project.getId() +"/edit"}' th:object="${project}" method="post">
+            <div class="name-header">
+                <div class="circ float-left">
+                    <div class="circ-initials"><i class="icon-cube"></i></div>
+                </div>
+                <div th:text='${project.getName()}' class="name-label">Name</div>
+                <button type="button" class="btn btn-outline-danger  float-right" data-toggle="modal"
+                        data-target="#exampleModal"><i class="icon-trash"></i>Usuń
+                </button>
+                <button type="submit" class="btn btn-outline-success float-right"><i class="icon-floppy"></i>Zapisz</button>
+            </div>
+            <div class="float-none"></div>
+            <br><br>
+
+            <table class="table">
+                <tbody>
+                <tr>
+                    <td><i class="icon-sort-numeric"></i>Kod:</td>
+                    <td>
+                        <input name="code" th:value="${project.getCode()}"
+                               type="text" class="form-control form-control-sm" />
+                    </td>
+                </tr>
+                <tr>
+                    <td><i class="icon-cube"></i>Nazwa:</td>
+                    <td>
+                        <input name="name" th:value="${project.getName()}"
+                               type="text" class="form-control form-control-sm">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><i class="icon-user-circle-o"></i>Kierownik:</td>
+                    <td>
+                        <select class="form-control form-control-sm" name="manager">
+                            <option th:each="user : ${allUsers}"
+                                    th:value="${user.getId()}" th:text="${user.getName()}"
+                                    th:selected="${user.getId() == project.getManager().getId()}"></option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><i class="icon-clock-1"></i>Data rozpoczęcia:</td>
+                    <td>
+                        <input name="startDate" th:value="${project.getStartDate()}"
+                               type="date" class="form-control form-control-sm" required>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><i class="icon-clock"></i>Data zakończenia:</td>
+                    <td>
+                        <input name="endDate" th:value="${project.getEndDate()}"
+                               type="date" class="form-control form-control-sm" required>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><i class="icon-comment"></i>Komentarz:</td>
+                    <td>
+                        <input name="other" th:value="${project.getOther()}"
+                               type="text" class="form-control form-control-sm">
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </form>
+
+    </div>
+
+    <div class="container" th:include="fragments/users :: content">
+    </div>
+</div>
+
+</body>
+</html>

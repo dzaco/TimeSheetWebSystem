@@ -63,7 +63,7 @@ public class DepartmentService {
         return department;
     }
 
-    public Department getDepartmentOfSupervisor(int id) {
+    public List<Department> getDepartmentsOfSupervisor(int id) {
         return this.departmentRepository.getDepartmentOfSupervisor(id);
     }
 

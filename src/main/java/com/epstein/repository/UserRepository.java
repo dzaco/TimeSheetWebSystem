@@ -17,6 +17,9 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     @Query(value = "SELECT * FROM USERS u WHERE u.active = 1", nativeQuery = true)
     List<User> findAllActive();
 
+    @Query(value = "SELECT * FROM USERS u WHERE u.active = 0", nativeQuery = true)
+    List<User> findAllInactive();
+
     @Query(value = "Select max(user_id) + 1 From users", nativeQuery = true)
     int lastId();
 

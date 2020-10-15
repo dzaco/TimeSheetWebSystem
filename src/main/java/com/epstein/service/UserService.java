@@ -1,8 +1,7 @@
 package com.epstein.service;
 
-import com.epstein.entity.Department;
 import com.epstein.entity.User;
-import com.epstein.entity.UserForm;
+import com.epstein.model.UserDTO;
 import com.epstein.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,7 +16,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService  implements UserDetailsService {
@@ -48,6 +46,7 @@ public class UserService  implements UserDetailsService {
     public List<User> getActiveUsers() {
         return userRepository.findAllActive();
     }
+    public List<User> getInactiveUsers() { return userRepository.findAllInactive();}
     public User getUserById(int id) {
         return userRepository.findById(id).orElse(new User());
     }
@@ -82,7 +81,12 @@ public class UserService  implements UserDetailsService {
         return userRepository.save(existingUser);
     }
 
-    public User getUserFromForm(UserForm form) {
+    public User updateUser(UserDTO userDTO) {
+        User user = this.getUserFromForm(userDTO);
+        return this.updateUser(user);
+    }
+
+    public User getUserFromForm(UserDTO form) {
         User user = userRepository.findById(form.getId()).orElse(new User());
         user.setFirstName(form.getFirstName());
         user.setLastName(form.getLastName());
@@ -92,10 +96,11 @@ public class UserService  implements UserDetailsService {
         user.setRole(form.getRole());
         user.setContract( contractService.getContractById(form.getContractId()) );
         user.setEmploymentTime(form.getEmploymentTime());
+        user.setActive(form.isActive());
         return user;
     }
 
-    public User getUserFromForm(UserForm form, boolean newUser ) {
+    public User getUserFromForm(UserDTO form, boolean newUser ) {
         User user = new User();
         user.setId(form.getId());
         user.setFirstName(form.getFirstName());

@@ -47,5 +47,7 @@ public class ProjectService {
     }
 
 
-
+    public List<Project> getProjectsOfSupervisor(int userId) {
+        return this.projectRepository.getProjectOfSupervisor(userId);
+    }
 }

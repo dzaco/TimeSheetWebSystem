@@ -11,7 +11,7 @@
     <div class="container">
         <div class="name-header">
             <div class="circ float-left">
-                <div class="circ-initials">D</div>
+                <div class="circ-initials"><i class="icon-sitemap"></i></div>
             </div>
             <div th:text='${department.getName()}' class="name-label">Name</div>
             <a th:href='${department.getId() + "/edit"}' role="button" class="btn btn-outline-success float-right"><i
@@ -35,7 +35,7 @@
             <tr>
                 <td><i class="icon-user-circle-o"></i>Dyrektor:</td>
                 <td>
-                    <a th:href='${"users/get/" + department.getSuperior()}'
+                    <a th:href='${"/users/get/" + department.getSuperior()}'
                        th:text="${department.getSuperior()}"></a>
                 </td>
             </tr>
