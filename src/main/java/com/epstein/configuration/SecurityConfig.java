@@ -33,8 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .hasAnyAuthority(roleService.getHighRoles())
                 .antMatchers("/**/edit/*")
                     .hasAnyAuthority(roleService.getHighRoles())
-                .antMatchers("/**/delete/*")
-                    .hasAnyAuthority(roleService.getHighRoles())
+//                .antMatchers("/**/delete/*")
+//                    .hasAnyAuthority(roleService.getHighRoles())
 
 
 

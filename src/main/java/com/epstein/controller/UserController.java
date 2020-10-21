@@ -1,5 +1,6 @@
 package com.epstein.controller;
 
+import com.epstein.configuration.ModelConfig;
 import com.epstein.entity.Department;
 import com.epstein.entity.Project;
 import com.epstein.entity.User;
@@ -21,20 +22,22 @@ public class UserController extends IController {
     @Autowired private TimesheetService timesheetService;
     @Autowired private ProjectService projectService;
 
-    @GetMapping("get")
+    @GetMapping("/get")
     public String getAll(Model model) {
         List<User> users = userService.getActiveUsers();
         model.addAttribute("users", users);
         model.addAttribute("page", "users");
+        model.addAttribute("model", new ModelConfig().withAddButton(true) );
         this.mainAttribute(model);
 
         return "base";
     }
-    @GetMapping("get-ex")
+    @GetMapping("/get-ex")
     public String getEx(Model model) {
         List<User> users = userService.getInactiveUsers();
         model.addAttribute("users", users);
         model.addAttribute("page", "users");
+        model.addAttribute("model", new ModelConfig().withAddButton(false) );
         this.mainAttribute(model);
 
         return "base";
@@ -48,6 +51,7 @@ public class UserController extends IController {
         this.mainAttribute(model);
 
         model.addAttribute("timesheets", timesheetService.getUserTimesheets(id));
+        model.addAttribute("model", new ModelConfig().withAddButton(false) );
 
         return "base";
     }

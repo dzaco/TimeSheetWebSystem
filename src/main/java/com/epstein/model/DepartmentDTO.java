@@ -1,14 +1,14 @@
-package com.epstein.entity;
+package com.epstein.model;
 
-public class DepartmentForm {
+public class DepartmentDTO {
 
     private int id;
     private String name;
     private int superiorId;
 
-    public DepartmentForm() {    }
+    public DepartmentDTO() {    }
 
-    public DepartmentForm(int id, String name, int superiorId) {
+    public DepartmentDTO(int id, String name, int superiorId) {
         this.id = id;
         this.name = name;
         this.superiorId = superiorId;

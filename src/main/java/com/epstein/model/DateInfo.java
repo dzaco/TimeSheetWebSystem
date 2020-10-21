@@ -7,7 +7,7 @@ import java.util.Locale;
 
 public class DateInfo {
 
-    private LocalDate now;
+    private final LocalDate date;
     private LocalDate firstDay;
     private LocalDate lastDay;
     private int offSet;
@@ -19,20 +19,20 @@ public class DateInfo {
     };
 
     public DateInfo() {
-        now = LocalDate.now();
+        date = LocalDate.now();
         init();
     }
     public DateInfo(int year, int month, int day) {
-        this.now = LocalDate.of(year, month, day);
+        this.date = LocalDate.of(year, month, day);
         init();
     }
     public DateInfo(LocalDate date) {
-        this.now = date;
+        this.date = date;
         init();
     }
     private void init(){
-        firstDay = now.minusDays( now.getDayOfMonth()-1 );
-        lastDay =  LocalDate.of(now.getYear(), now.getMonth().plus(1), 1).minusDays(1);
+        firstDay = date.minusDays( date.getDayOfMonth()-1 );
+        lastDay =  LocalDate.of(date.getYear(), date.getMonth().plus(1), 1).minusDays(1);
         offSet = firstDay.getDayOfWeek().getValue()-2;
     }
 
@@ -46,13 +46,13 @@ public class DateInfo {
     }
 
     public int getYear() {
-        return this.now.getYear();
+        return this.date.getYear();
     }
     public Month getMonth() {
-        return this.now.getMonth();
+        return this.date.getMonth();
     }
     public String getMonthName() {
-        String str = this.now.getMonth().getDisplayName(TextStyle.FULL_STANDALONE, Locale.getDefault());
+        String str = this.date.getMonth().getDisplayName(TextStyle.FULL_STANDALONE, Locale.getDefault());
         return str.substring(0,1).toUpperCase() + str.substring(1);
     }
     public String getMonthAndYear() {
@@ -60,20 +60,20 @@ public class DateInfo {
     }
 
     public String getPreviousMonthName() {
-        return this.now.minusMonths(1).getMonth().getDisplayName(TextStyle.FULL_STANDALONE, Locale.getDefault());
+        return this.date.minusMonths(1).getMonth().getDisplayName(TextStyle.FULL_STANDALONE, Locale.getDefault());
     }
     public DateInfo getPreviousMonth() {
-        return new DateInfo( now.minusMonths(1));
+        return new DateInfo( date.minusMonths(1));
     }
 
     public int getDay() {
-        return this.now.getDayOfMonth();
+        return this.date.getDayOfMonth();
     }
     public String getDayName() {
-        return this.now.getDayOfWeek().getDisplayName(TextStyle.FULL_STANDALONE, Locale.getDefault());
+        return this.date.getDayOfWeek().getDisplayName(TextStyle.FULL_STANDALONE, Locale.getDefault());
     }
     public int getDayOfWeek() {
-        return this.now.getDayOfWeek().getValue();
+        return this.date.getDayOfWeek().getValue();
     }
     public int getLastDay() {
         return lastDay.getDayOfMonth();
@@ -101,5 +101,16 @@ public class DateInfo {
         return 0;
     }
 
+    @Override
+    public String toString() {
+        return this.getDayName() + " " + this.getDay() + " " +  this.getMonth().getDisplayName(TextStyle.FULL,Locale.getDefault()) + " " + this.getYear();
+    }
 
+    public LocalDate toLocalDate() {
+        return this.date;
+    }
+
+    public String getStringValue() {
+        return this.getYear() + "-" + this.getMonth().getValue() + "-" + this.getDay();
+    }
 }

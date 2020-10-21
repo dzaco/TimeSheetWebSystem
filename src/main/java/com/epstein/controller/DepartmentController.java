@@ -1,8 +1,8 @@
 package com.epstein.controller;
 
+import com.epstein.configuration.ModelConfig;
 import com.epstein.entity.Department;
-import com.epstein.entity.DepartmentForm;
-import com.epstein.model.DepartmentListDTO;
+import com.epstein.model.DepartmentDTO;
 import com.epstein.service.DepartmentService;
 import com.epstein.service.RoleService;
 import com.epstein.service.UserService;
@@ -11,10 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
-
-import javax.websocket.server.PathParam;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller @RequestMapping("/departments")
 public class DepartmentController extends IController {
@@ -38,6 +34,7 @@ public class DepartmentController extends IController {
         model.addAttribute("department", department);
         model.addAttribute("users", departmentService.getUsersInDepartment(department.getId(), 1));
         model.addAttribute("userHeader", "Lista Pracowników w Dziale");
+        model.addAttribute("model", new ModelConfig().withAddButton(false) );
 
         this.mainAttribute(model);
 
@@ -57,10 +54,10 @@ public class DepartmentController extends IController {
     }
 
     @PostMapping("/get/{id}/edit")
-    public RedirectView postEdit(@PathVariable int id, @ModelAttribute(value="departmentForm") DepartmentForm departmentForm, Model model) {
+    public RedirectView postEdit(@PathVariable int id, @ModelAttribute(value="departmentForm") DepartmentDTO departmentDTO, Model model) {
         this.mainAttribute(model);
 
-        Department department = this.departmentService.getDepartmentFromForm(departmentForm);
+        Department department = this.departmentService.getDepartmentFromForm(departmentDTO);
         this.departmentService.updateDepartmentAndSuperiorRole(department);
         return new RedirectView("/departments/get/" + id);
     }
@@ -72,17 +69,17 @@ public class DepartmentController extends IController {
 
         Department department = departmentService.getSample();
         model.addAttribute("thisDepartment" , department);
-        model.addAttribute("departmentForm", new DepartmentForm());
+        model.addAttribute("departmentForm", new DepartmentDTO());
         model.addAttribute("users", this.userService.getUsers() );
         model.addAttribute("page", "department-details-add");
         return "base";
     }
 
     @PostMapping("/add")
-    public RedirectView postAdd(@ModelAttribute DepartmentForm departmentForm, Model model) {
+    public RedirectView postAdd(@ModelAttribute DepartmentDTO departmentDTO, Model model) {
         this.mainAttribute(model);
 
-        this.departmentService.updateDepartment( this.departmentService.getDepartmentFromForm(departmentForm));
+        this.departmentService.updateDepartment( this.departmentService.getDepartmentFromForm(departmentDTO));
         return new RedirectView("/departments/get");
     }
 }

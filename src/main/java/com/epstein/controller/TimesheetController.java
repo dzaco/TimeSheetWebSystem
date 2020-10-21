@@ -1,5 +1,6 @@
 package com.epstein.controller;
 
+import com.epstein.configuration.ModelConfig;
 import com.epstein.entity.Department;
 import com.epstein.entity.Timesheet;
 import com.epstein.model.DateInfo;
@@ -30,6 +31,7 @@ public class TimesheetController extends IController {
         this.mainAttribute(model);
 
         model.addAttribute("page", "timesheets");
+        model.addAttribute("model", new ModelConfig() );
         return "base";
     }
 

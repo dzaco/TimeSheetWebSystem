@@ -1,5 +1,6 @@
 package com.epstein.controller;
 
+import com.epstein.service.MessageService;
 import com.epstein.service.RoleService;
 import com.epstein.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,16 +10,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class MainController {
-
     @Autowired private UserService userService;
     @Autowired private RoleService roleService;
+    @Autowired private MessageService messageService;
 
     @GetMapping("/")
-    public String index(Model model){
+    public String index(Model model) {
         model.addAttribute("logged", this.userService.getLogged());
         model.addAttribute("roleService", roleService);
+
+        model.addAttribute("messages", this.messageService.getUserMessages(this.userService.getLogged()));
+
         return "index";
     }
-
 
 }

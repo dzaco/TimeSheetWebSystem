@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+
+<head lang="pl">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:fragment="content">
+    <div class="container">
+
+        <form action="#" th:action='${"/worktimes/add"}' th:object="${worktime}" method="post">
+            <div class="name-header">
+                <div class="circ float-left">
+                    <div class="circ-initials"><i class="icon-clock"></i></div>
+                </div>
+                <div th:text='${"Godziny pracy w dniu " + now.toLocalDate()}' class="name-label">Name</div>
+                <button type="submit" class="btn btn-outline-success float-right"><i class="icon-floppy"></i>Zapisz
+                </button>
+            </div>
+            <div class="float-none"></div>
+            <br><br>
+
+            <table class="table">
+                <tbody>
+                <tr>
+                    <td><i class="icon-calendar"></i>Data:</td>
+                    <td th:text="${ now.toLocalDate() }"
+                        th:name="date" th:value="${ now.toLocalDate() }"></td>
+                </tr>
+
+                <tr>
+                    <td><i class="icon-clock"></i>Godzina przyjścia:</td>
+                    <td>
+                        <input type="time" name="timeIn" class="form-control form-control-sm"
+                               th:value="${{ now.toLocalTime() }}">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><i class="icon-clock"></i>Godzina Wyjścia:</td>
+                    <td>
+                        <input type="time" name="timeOut" class="form-control form-control-sm">
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,7 +1,7 @@
 package com.epstein.service;
 
 import com.epstein.entity.Department;
-import com.epstein.entity.DepartmentForm;
+import com.epstein.model.DepartmentDTO;
 import com.epstein.entity.User;
 import com.epstein.repository.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +55,7 @@ public class DepartmentService {
         return this.updateDepartment(department);
     }
 
-    public Department getDepartmentFromForm(DepartmentForm form) {
+    public Department getDepartmentFromForm(DepartmentDTO form) {
         Department department = new Department();
         department.setId(form.getId());
         department.setName(form.getName());

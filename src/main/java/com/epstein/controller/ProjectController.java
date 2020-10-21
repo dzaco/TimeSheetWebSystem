@@ -1,5 +1,6 @@
 package com.epstein.controller;
 
+import com.epstein.configuration.ModelConfig;
 import com.epstein.entity.Project;
 import com.epstein.service.ProjectService;
 import com.epstein.service.RoleService;
@@ -19,6 +20,7 @@ public class ProjectController extends IController {
     public String getAll(Model model) {
         model.addAttribute("projects", this.projectService.getActiveProjects());
         model.addAttribute("page" , "projects");
+        model.addAttribute("model", new ModelConfig() );
         this.mainAttribute(model);
 
         return "base";
@@ -31,6 +33,7 @@ public class ProjectController extends IController {
         model.addAttribute("project", project);
         model.addAttribute("users", this.userService.getUserInProject(project.getId()));
         model.addAttribute("userHeader", "Lista Pracowników w Projekcie");
+        model.addAttribute("model", new ModelConfig().withAddButton(false) );
         this.mainAttribute(model);
 
         model.addAttribute("page", "project-details");

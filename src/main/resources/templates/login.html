@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="pl">
-<th:block th:replace="fragments/starter :: head"> </th:block>
+<head>
+    <th:block th:replace="base :: head"> </th:block>
+    <link th:href="@{/css/login.css}" rel="stylesheet" />
+</head>
 <body>
 
 <main role="main" class="jumbotron">
@@ -30,6 +33,6 @@
     </div>
 </main>
 
-<th:block th:replace="fragments/starter :: js"> </th:block>
+<th:block th:replace="base :: js"> </th:block>
 </body>
 </html>

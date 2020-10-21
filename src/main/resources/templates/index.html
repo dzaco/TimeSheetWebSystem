@@ -4,12 +4,12 @@
     <th:block th:include="base :: head"> </th:block>
 </head>
 <body>
-<main role="main" class="container">
+<main role="main" class="jumbotron">
      <th:block th:replace="base :: nav"> </th:block>
-    <th:block>
+    <th:block th:if="${ messages }" th:replace="fragments/messages :: content">
         wiadomości
     </th:block>
 </main>
-    <th:block th:include="fragments/starter :: js"> </th:block>
+    <th:block th:include="base :: js"> </th:block>
 </body>
 </html>
