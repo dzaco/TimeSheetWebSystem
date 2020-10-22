@@ -1,17 +1,11 @@
 package com.epstein.factory;
 
-import com.epstein.entity.User;
 import com.epstein.model.DateInfo;
-import com.epstein.model.LayoutInfo;
 import com.epstein.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
