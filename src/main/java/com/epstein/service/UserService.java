@@ -1,7 +1,7 @@
 package com.epstein.service;
 
 import com.epstein.entity.User;
-import com.epstein.model.UserDTO;
+import com.epstein.dto.UserDTO;
 import com.epstein.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -49,6 +49,9 @@ public class UserService  implements UserDetailsService {
     public List<User> getInactiveUsers() { return userRepository.findAllInactive();}
     public User getUserById(int id) {
         return userRepository.findById(id).orElse(new User());
+    }
+    public User getUserByEmail(String email) {
+        return this.userRepository.findByEmail(email);
     }
 
     public String deleteUser(int id) {
@@ -139,7 +142,7 @@ public class UserService  implements UserDetailsService {
         return this.userRepository.getUsersInDepartment(departmentId,active);
     }
 
-    public List<User> getUserInProject(int projectId) {
+    public List<User> getUsersInProject(int projectId) {
         return this.userRepository.getUsersInProject(projectId);
     }
 

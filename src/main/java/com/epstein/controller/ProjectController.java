@@ -2,6 +2,7 @@ package com.epstein.controller;
 
 import com.epstein.configuration.ModelConfig;
 import com.epstein.entity.Project;
+import com.epstein.factory.ModelFactory;
 import com.epstein.service.ProjectService;
 import com.epstein.service.RoleService;
 import com.epstein.service.UserService;
@@ -12,17 +13,22 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Controller @RequestMapping("/projects")
-public class ProjectController extends IController {
+public class ProjectController {
 
     @Autowired private ProjectService projectService;
+    @Autowired private UserService userService;
+    @Autowired private RoleService roleService;
+
+    @Autowired private ModelFactory modelFactory;
 
     @GetMapping("/get")
     public String getAll(Model model) {
-        model.addAttribute("projects", this.projectService.getActiveProjects());
-        model.addAttribute("page" , "projects");
-        model.addAttribute("model", new ModelConfig() );
-        this.mainAttribute(model);
 
+        model = modelFactory.setModel(model)
+                .withAllProjects()
+                .create();
+
+        model.addAttribute("page" , "projects");
         return "base";
     }
 
@@ -30,11 +36,11 @@ public class ProjectController extends IController {
     @GetMapping("/get/{id}")
     public String getById(@PathVariable int id, Model model) {
         Project project = this.projectService.getProjectById(id);
-        model.addAttribute("project", project);
-        model.addAttribute("users", this.userService.getUserInProject(project.getId()));
-        model.addAttribute("userHeader", "Lista Pracowników w Projekcie");
-        model.addAttribute("model", new ModelConfig().withAddButton(false) );
-        this.mainAttribute(model);
+
+        model = modelFactory.setModel(model)
+                .withProject(id)
+                .withUsersInProject(id)
+                .create();
 
         model.addAttribute("page", "project-details");
         return "base";
@@ -42,12 +48,12 @@ public class ProjectController extends IController {
 
     @GetMapping("/get/{id}/edit")
     public String edit(@PathVariable int id, Model model) {
-        Project project = this.projectService.getProjectById(id);
-        model.addAttribute("project", project);
-        model.addAttribute("users", this.userService.getUserInProject(project.getId()));
-        model.addAttribute("allUsers", this.userService.getUsers());
 
-        this.mainAttribute(model);
+        model.addAttribute("allUsers", this.userService.getUsers());
+        model = modelFactory.setModel(model)
+                .withProject(id)
+                .withUsersInProject(id)
+                .create();
 
         //TODO mozliwosc dodania i usuwania pracownikow z projektu
         model.addAttribute("page", "project-details-edit");
@@ -56,7 +62,7 @@ public class ProjectController extends IController {
 
     @PostMapping("/get/{id}/edit")
     public RedirectView postEdit(@PathVariable int id, @ModelAttribute(value="project") Project project, Model model) {
-        System.out.println(project.getEndDate());
+
         this.projectService.update(project);
         return new RedirectView("/projects/get/" +id);
     }
@@ -64,7 +70,7 @@ public class ProjectController extends IController {
     @GetMapping("/add")
     public String add(Model model) {
         model.addAttribute("project" , new Project());
-        this.mainAttribute(model);
+        model = modelFactory.setModel(model).create();
 
         model.addAttribute("page", "project-details-add");
         return "base";
@@ -72,7 +78,7 @@ public class ProjectController extends IController {
 
     @PostMapping("/add")
     public RedirectView postAdd(@ModelAttribute Project postProject, Model model) {
-        this.mainAttribute(model);
+        model = modelFactory.setModel(model).create();
 
         this.projectService.update( postProject );
         return new RedirectView("/projects/get");

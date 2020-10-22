@@ -1,7 +1,10 @@
 package com.epstein.controller;
 
 import com.epstein.entity.WorkTime;
+import com.epstein.factory.ModelFactory;
 import com.epstein.model.DateInfo;
+import com.epstein.service.RoleService;
+import com.epstein.service.UserService;
 import com.epstein.service.WorkTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,17 +17,21 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Controller @RequestMapping("/worktimes")
-public class WorkTimeController extends IController{
+public class WorkTimeController {
     @Autowired private WorkTimeService workTimeService;
+    @Autowired private UserService userService;
+    @Autowired private RoleService roleService;
+
+    @Autowired private ModelFactory modelFactory;
 
 
     @GetMapping("/add")
     public String add(Model model) {
-        this.mainAttribute(model);
+        model = modelFactory.setModel(model)
+                .withDateTime()
+                .create();
 
         model.addAttribute("worktime", new WorkTime() );
-        model.addAttribute("now", LocalDateTime.now() );
-
         model.addAttribute("page" , "worktime-add");
         return "base";
     }
@@ -46,19 +53,4 @@ public class WorkTimeController extends IController{
         return new RedirectView("/");
     }
 
-
-    @Override
-    String getAll(Model model) {
-        return null;
-    }
-
-    @Override
-    String getById(int id, Model model) {
-        return null;
-    }
-
-    @Override
-    String edit(int id, Model model) {
-        return null;
-    }
 }

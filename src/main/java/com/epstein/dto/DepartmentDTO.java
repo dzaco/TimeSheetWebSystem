@@ -1,4 +1,4 @@
-package com.epstein.model;
+package com.epstein.dto;
 
 public class DepartmentDTO {
 

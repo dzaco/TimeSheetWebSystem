@@ -1,5 +1,6 @@
 package com.epstein.controller;
 
+import com.epstein.factory.ModelFactory;
 import com.epstein.service.MessageService;
 import com.epstein.service.RoleService;
 import com.epstein.service.UserService;
@@ -14,12 +15,15 @@ public class MainController {
     @Autowired private RoleService roleService;
     @Autowired private MessageService messageService;
 
+    @Autowired private ModelFactory modelFactory;
+
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("logged", this.userService.getLogged());
-        model.addAttribute("roleService", roleService);
 
-        model.addAttribute("messages", this.messageService.getUserMessages(this.userService.getLogged()));
+        model = modelFactory.setModel(model)
+                .withUserMessages( this.userService.getLogged().getId() )
+                .create();
+
 
         return "index";
     }

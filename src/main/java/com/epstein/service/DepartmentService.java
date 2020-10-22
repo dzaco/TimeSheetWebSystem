@@ -1,7 +1,7 @@
 package com.epstein.service;
 
 import com.epstein.entity.Department;
-import com.epstein.model.DepartmentDTO;
+import com.epstein.dto.DepartmentDTO;
 import com.epstein.entity.User;
 import com.epstein.repository.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;

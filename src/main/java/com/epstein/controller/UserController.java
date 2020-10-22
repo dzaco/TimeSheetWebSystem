@@ -4,7 +4,8 @@ import com.epstein.configuration.ModelConfig;
 import com.epstein.entity.Department;
 import com.epstein.entity.Project;
 import com.epstein.entity.User;
-import com.epstein.model.UserDTO;
+import com.epstein.dto.UserDTO;
+import com.epstein.factory.ModelFactory;
 import com.epstein.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,59 +13,63 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.ArrayList;
 import java.util.List;
 @Controller @RequestMapping("users")
-public class UserController extends IController {
+public class UserController {
 
+    @Autowired private UserService userService;
+    @Autowired private RoleService roleService;
     @Autowired private DepartmentService departmentService;
     @Autowired private ContractService contractService;
     @Autowired private TimesheetService timesheetService;
     @Autowired private ProjectService projectService;
 
+    @Autowired private ModelFactory modelFactory;
+
     @GetMapping("/get")
     public String getAll(Model model) {
-        List<User> users = userService.getActiveUsers();
-        model.addAttribute("users", users);
-        model.addAttribute("page", "users");
-        model.addAttribute("model", new ModelConfig().withAddButton(true) );
-        this.mainAttribute(model);
+        model = modelFactory.setModel(model)
+                .withAllUsers()
+                .withAddButton(true)
+                .create();
 
+        model.addAttribute("page", "users");
         return "base";
     }
+
     @GetMapping("/get-ex")
     public String getEx(Model model) {
-        List<User> users = userService.getInactiveUsers();
-        model.addAttribute("users", users);
-        model.addAttribute("page", "users");
-        model.addAttribute("model", new ModelConfig().withAddButton(false) );
-        this.mainAttribute(model);
 
+        model = modelFactory.setModel(model)
+                .withInactiveUsers()
+                .create();
+
+        model.addAttribute("page", "users");
         return "base";
     }
 
     @GetMapping("/get/{id}")
     public String getById(@PathVariable int id, Model model) {
-        User user = userService.getUserById(id);
-        model.addAttribute("user", user);
+
+        model = modelFactory.setModel(model)
+                .withUser(id)
+                .withUserTimesheets(id)
+                .create();
+
         model.addAttribute("page", "user-details");
-        this.mainAttribute(model);
-
-        model.addAttribute("timesheets", timesheetService.getUserTimesheets(id));
-        model.addAttribute("model", new ModelConfig().withAddButton(false) );
-
         return "base";
     }
 
     @GetMapping("/get/{id}/edit")
     public String edit(@PathVariable int id, Model model) {
-        User user = userService.getUserById(id);
-        model.addAttribute("user", user);
-        model.addAttribute("departments", departmentService.getDepartments());
-        model.addAttribute("contracts", contractService.getContracts());
-        model.addAttribute("roles", roleService.getRolesList() );
+
         model.addAttribute("userForm" , new UserDTO() );
-        this.mainAttribute(model);
+
+        model = modelFactory.setModel(model)
+                .withUser(id)
+                .withAllDepartments()
+                .withAllContracts()
+                .create();
 
         model.addAttribute("page", "user-details-edit");
         return "base";
@@ -80,12 +85,13 @@ public class UserController extends IController {
     @GetMapping("/add")
     public String add(Model model) {
         //User user = this.userService.sampleUser();
-        model.addAttribute("user",new User());
-        model.addAttribute("departments", departmentService.getDepartments());
-        model.addAttribute("contracts", contractService.getContracts());
-        model.addAttribute("roles", roleService.getRolesList() );
+        model.addAttribute("user", new User());
         model.addAttribute("userForm" , new UserDTO() );
-        this.mainAttribute(model);
+
+        model = modelFactory.setModel(model)
+                .withAllDepartments()
+                .withAllContracts()
+                .create();
 
         model.addAttribute("page", "user-details-add");
         return "base";
@@ -94,7 +100,7 @@ public class UserController extends IController {
     @PostMapping("/add")
     public RedirectView postAdd(@ModelAttribute UserDTO userDTO, Model model) {
         this.userService.updateUser( userService.getUserFromForm(userDTO,true));
-        this.mainAttribute(model);
+        model = modelFactory.setModel(model).create();
         return new RedirectView("/users/get");
     }
 
@@ -103,8 +109,6 @@ public class UserController extends IController {
         this.userService.deactivateUser(id);
         int count = departmentService.getDepartmentsOfSupervisor(id).size()
                 + projectService.getProjectsOfSupervisor(id).size();
-
-        this.mainAttribute(model);
 
         if(count == 0)
             return new RedirectView("/users/get");
@@ -118,10 +122,11 @@ public class UserController extends IController {
 
         model.addAttribute("departments", departmentService.getDepartmentsOfSupervisor(id) );
         model.addAttribute("projects", projectService.getProjectsOfSupervisor(id) );
-
-        model.addAttribute("users", userService.getActiveUsers() );
         model.addAttribute("exManagerId" , id );
-        this.mainAttribute(model);
+
+        model = modelFactory.setModel(model)
+                .withAllUsers()
+                .create();
 
         model.addAttribute("page", "department-list-edit");
         return "base";

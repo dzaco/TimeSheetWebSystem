@@ -3,6 +3,7 @@ package com.epstein.controller;
 import com.epstein.configuration.ModelConfig;
 import com.epstein.entity.Department;
 import com.epstein.entity.Timesheet;
+import com.epstein.factory.ModelFactory;
 import com.epstein.model.DateInfo;
 import com.epstein.service.ProjectService;
 import com.epstein.service.RoleService;
@@ -19,27 +20,35 @@ import java.util.Calendar;
 import java.util.Date;
 
 @Controller @RequestMapping("/timesheets")
-public class TimesheetController extends IController {
+public class TimesheetController {
 
     @Autowired private TimesheetService timesheetService;
     @Autowired private ProjectService projectService;
+    @Autowired private UserService userService;
+    @Autowired private RoleService roleService;
+
+    @Autowired private ModelFactory modelFactory;
 
 
     @GetMapping("/get")
     public String getAll(Model model) {
-        model.addAttribute("timesheets", timesheetService.getTimesheets());
-        this.mainAttribute(model);
+
+        model = modelFactory.setModel(model)
+                .withAllTimesheets()
+                .withAddButton(false)
+                .create();
 
         model.addAttribute("page", "timesheets");
-        model.addAttribute("model", new ModelConfig() );
+
         return "base";
     }
 
     @GetMapping("/get/{id}")
     public String getById(@PathVariable int id, Model model) {
-        Timesheet timesheet = this.timesheetService.getTimesheetById(id);
-        model.addAttribute("timesheet", timesheet);
-        this.mainAttribute(model);
+
+        model = modelFactory.setModel(model)
+                .withTimesheet(id)
+                .create();
 
         model.addAttribute("page", "timesheet-details");
         return "base";
@@ -47,8 +56,10 @@ public class TimesheetController extends IController {
 
     @GetMapping("/get/{id}/edit")
     public String edit(int id, Model model) {
-        model.addAttribute("timesheet", this.timesheetService.getTimesheetById(id));
-        this.mainAttribute(model);
+
+        model = modelFactory.setModel(model)
+                .withTimesheet(id)
+                .create();
 
         model.addAttribute("page", "department-details-edit");
         return "base";
@@ -57,10 +68,11 @@ public class TimesheetController extends IController {
     @GetMapping("/add")
     public String add(Model model) {
         model.addAttribute("timesheet", new Timesheet());
-        model.addAttribute("projects", projectService.getActiveProjects());
-        model.addAttribute("date", new DateInfo() );
 
-        this.mainAttribute(model);
+        model = modelFactory.setModel(model)
+                .withAllProjects()
+                .withDate()
+                .create();
 
         model.addAttribute("page", "timesheet-details-add");
         return "base";

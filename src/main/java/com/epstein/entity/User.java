@@ -27,18 +27,7 @@ public class User {
 
 
 
-    public User() {
-//        this.firstName = "firstName";
-//        this.lastName = "lastName";
-//        this.email = "email";
-//        this.password = "password";
-//        this.department = new Department("Dział",this);
-//        this.position = "position";
-//        this.contract = new Contract("Umowa");
-//        this.role = "USER";
-//        this.employmentTime = 0;
-//        this.active = true;
-    }
+    public User() {    }
 
     public User(String firstName, String lastName, String email, String password, Department department, String position, Contract contract, String role, int employmentTime, boolean active) {
         this();
