@@ -8,7 +8,16 @@
 <div th:fragment="content">
     <div class="container" id="projects">
         <div class="form-inline">
-            <h3 class="mr-auto">Lista Timesheet'ów</h3>
+            <h3 class="mr-auto">Lista Timesheet'ów </h3>
+
+<!--            <form method="post" action="/timesheets/csv" th:object="${ container }">-->
+<!--                <input th:field="${ timesheetList }" th:value="${ timesheets }" type="hidden" />-->
+<!--                <button type="submit" class="btn">-->
+<!--                    <i class="icon-right-hand"></i><i class="icon-doc-text"></i>Pobierz CSV-->
+<!--                </button>-->
+
+<!--            </form>-->
+
             <input class="form-control" id="filterInput" type="text" placeholder="Szukaj..">
         </div>
         <table class="table table-hover">
@@ -32,6 +41,7 @@
                 <td th:text="${timesheet.getStage()}"></td>
                 <td th:text="${timesheet.getMonthAndYear()}"></td>
                 <td th:text="${timesheet.getSum()}"></td>
+                <td ><a th:href="${ '/timesheets/get/' + timesheet.getId() }"><i class="icon-right-hand"></i><i class="icon-calendar"></i></a></td>
             </tr>
             </tbody>
         </table>

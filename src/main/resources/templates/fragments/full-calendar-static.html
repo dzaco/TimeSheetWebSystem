@@ -22,16 +22,18 @@
             </thead>
 
             <tbody>
-                <tr class="week" th:each="week : ${#numbers.sequence(0,5)}">
+                <tr class="week" th:each="week : ${#numbers.sequence(0,4)}">
                     <td class="day" th:each="day : ${#numbers.sequence(0,6)}">
-                        <th:block th:if="${ (7*week + day - now.offSet() > 0) &&
-                        (7*week + day - now.offSet() <= now.getLastDay() ) }" >
-                            <small th:text='${7*week + day - now.offSet() + "." + now.getMonth().getValue()}'
+                        <th:block th:if="${ (7*week + day - date.offSet() > 0) &&
+                        (7*week + day - date.offSet() <= date.getLastDay() ) }" >
+                            <small th:text='${7*week + day - date.offSet() + "." + date.getMonth().getValue()}'
                                    class="badge badge-pill badge-secondary dateBadge"></small> <br/>
-                            <input th:if='${now.isWeekend(week, day)}' hidden
+                            <input th:if='${date.isWeekend(week, day)}' hidden
                                    type="number" class="form-control form-control-sm" name="date" >
-                            <input th:unless='${now.isWeekend(week, day)}'
-                                   type="number" class="form-control form-control-sm" name="date" >
+                            <input th:unless='${date.isWeekend(week, day)}'
+                                   th:value="${ timesheet.getHours()[7*week + day - date.offSet()] }"
+                                   type="number" class="form-control form-control-sm" name="date"
+                                   disabled>
                         </th:block>
 
                     </td>

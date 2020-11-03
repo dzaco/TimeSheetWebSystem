@@ -1,5 +1,6 @@
 package com.epstein.factory;
 
+import com.epstein.entity.Timesheet;
 import com.epstein.model.DateInfo;
 import com.epstein.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,9 @@ public class ModelFactory {
         return this;
     }
     public ModelFactory withTimesheet(int timesheetID) {
-        model.addAttribute("timesheet", timesheetService.getTimesheetById(timesheetID) );
+        Timesheet timesheet = timesheetService.getTimesheetById(timesheetID);
+        model.addAttribute("timesheet",  timesheet);
+        model.addAttribute("date" , new DateInfo(timesheet.getYear(), timesheet.getMonthValue(), 1) );
         return this;
     }
     public ModelFactory withUserTimesheets(int userID) {
@@ -123,4 +126,13 @@ public class ModelFactory {
         return this.getModel();
     }
 
+    public ModelFactory withAllRoles() {
+        this.model.addAttribute("roles", this.roleService.getRoles() );
+        return this;
+    }
+
+    public ModelFactory withTimesheetsInProject(int id) {
+        this.model.addAttribute("timesheets", this.timesheetService.getTimesheetsInProject(id) );
+        return this;
+    }
 }

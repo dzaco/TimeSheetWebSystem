@@ -37,7 +37,7 @@ public class DepartmentController {
     public String getById(@PathVariable int id, Model model) {
 
         model = modelFactory.setModel(model)
-                .withAllDepartments()
+                .withDepartment(id)
                 .withUsersInDepartment(id)
                 .create();
 

@@ -47,11 +47,11 @@
                     <td>Miesiąc:</td>
                     <td>
                         <select class="form-control form-control-sm" name="month">
-                            <option th:value="${date.getPreviousMonth().getMonthAndYear()}"
-                                    th:text="${date.getPreviousMonth().getMonthAndYear()}">
+                            <option th:value="${ now.getPreviousMonth().getMonthAndYear() }"
+                                    th:text="${ now.getPreviousMonth().getMonthAndYear() }">
                             </option>
-                            <option selected th:value="${date.getMonthAndYear()}"
-                                    th:text="${date.getMonthAndYear()}">
+                            <option selected th:value="${now.getMonthAndYear()}"
+                                    th:text="${now.getMonthAndYear()}">
                             </option>
                         </select>
                     </td>

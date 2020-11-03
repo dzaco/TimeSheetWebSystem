@@ -20,6 +20,8 @@
                 <button th:if="${user.isActive()}" type="button" class="btn btn-outline-danger  float-right" data-toggle="modal"
                         data-target="#exampleModal"><i class="icon-trash"></i>Usuń
                 </button>
+<!--                <a th:unless="${user.isActive()}" th:href='${"/users/rehire/" + user.getId()}' role="button" class="btn btn-danger">-->
+<!--                    <i class="icon-trash"></i>Przywróć</a>-->
                 <button type="submit" class="btn btn-outline-success float-right"><i class="icon-floppy"></i>Zapisz</button>
             </div>
 
@@ -72,11 +74,30 @@
                 <tr>
                     <td><i class="icon-key"></i>Uprawnienia:</td>
                     <td>
-                        <select class="form-control form-control-sm" name="role">
-                            <option th:each="role : ${roles}"
-                                    th:value="${role}" th:text="${role}"
-                                    th:selected="${role.equals( user.getRole() )}"></option>
-                        </select>
+                        <div th:each=" role : ${ roleService.getRoles() }"
+                             class="form-check form-check-inline" >
+                            <input th:if="${ role.getRole().equals( 'USER' ) }"
+                                   type="radio" name="roles" checked
+                                   class="form-check-input"
+                                   th:id="${ 'ROLE_' + role }"
+                                   th:value="${ role }">
+
+                            <input th:unless="${ role.getRole().equals( 'USER' ) }"
+                                   type="checkbox" name="roles"
+                                   class="form-check-input"
+                                   th:id="${ 'ROLE_' + role }"
+                                   th:value="${ role }"
+                                   th:checked="${ user.getRolesClass().hasRole( role ) }">
+
+
+                            <label class="form-check-label" th:for="${ 'ROLE_' + role }"
+                                   th:text="${ role }">role</label>
+                        </div>
+<!--                        <select class="form-control form-control-sm" name="role">-->
+<!--                            <option th:each="role : ${roles}"-->
+<!--                                    th:value="${role}" th:text="${role}"-->
+<!--                                    th:selected="${role.equals( user.getRole() )}"></option>-->
+<!--                        </select>-->
                     </td>
                 </tr>
 

@@ -10,13 +10,13 @@ public class UserDTO {
     private int departmentId;
     private String position;
     private int contractId;
-    private String role;
+    private String[] roles;
     private int employmentTime;
     private boolean active;
 
     public UserDTO() {    }
 
-    public UserDTO(int id, String firstName, String lastName, String email, String password, int departmentId, String position, int contractId, String role, int employmentTime, boolean active) {
+    public UserDTO(int id, String firstName, String lastName, String email, String password, int departmentId, String position, int contractId, String[] roles, int employmentTime, boolean active) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -25,7 +25,7 @@ public class UserDTO {
         this.departmentId = departmentId;
         this.position = position;
         this.contractId = contractId;
-        this.role = role;
+        this.roles = roles;
         this.employmentTime = employmentTime;
         this.active = active;
     }
@@ -94,12 +94,12 @@ public class UserDTO {
         this.contractId = contractId;
     }
 
-    public String getRole() {
-        return role;
+    public String[] getRoles() {
+        return roles;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoles(String[] roles) {
+        this.roles = roles;
     }
 
     public int getEmploymentTime() {

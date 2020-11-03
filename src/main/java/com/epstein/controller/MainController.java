@@ -24,6 +24,12 @@ public class MainController {
                 .withUserMessages( this.userService.getLogged().getId() )
                 .create();
 
+        System.out.println(userService.getLogged().getRolesClass() );
+        System.out.println(roleService.getHighRoles() );
+        System.out.println(userService.getLogged().getRolesClass().hasAnyRole( roleService.getHighRoles() ));
+
+
+
 
         return "index";
     }

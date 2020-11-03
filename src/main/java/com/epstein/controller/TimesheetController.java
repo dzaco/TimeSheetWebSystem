@@ -1,10 +1,7 @@
 package com.epstein.controller;
 
-import com.epstein.configuration.ModelConfig;
-import com.epstein.entity.Department;
 import com.epstein.entity.Timesheet;
 import com.epstein.factory.ModelFactory;
-import com.epstein.model.DateInfo;
 import com.epstein.service.ProjectService;
 import com.epstein.service.RoleService;
 import com.epstein.service.TimesheetService;
@@ -13,11 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
-import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.IntStream;
 
 @Controller @RequestMapping("/timesheets")
 public class TimesheetController {
@@ -65,6 +62,7 @@ public class TimesheetController {
         return "base";
     }
 
+
     @GetMapping("/add")
     public String add(Model model) {
         model.addAttribute("timesheet", new Timesheet());
@@ -92,14 +90,19 @@ public class TimesheetController {
         timesheet.setMonthAndYear( month );
         timesheet.setUser( this.userService.getLogged() );
 
-        int[] hoursInDays = new int[31];
-        for(int i = 0; i < 31; i++ ) {
-            if(date[i].equals("") || date[i].equals(" "))
-                hoursInDays[i] = 0;
-            else
-                hoursInDays[i] = Integer.parseInt( date[i] );
+        List<Integer> hoursInDays = new ArrayList<>();
+        for(String h : date ) {
+            hoursInDays.add( h.isBlank() ? 0 : Integer.parseInt( h ));
         }
-        timesheet.setHours(hoursInDays);
+        while(hoursInDays.size() < 31) {
+            hoursInDays.add(0);
+        }
+
+
+        Integer[] intArray = new Integer[hoursInDays.size()];
+        intArray = hoursInDays.toArray(intArray);
+
+        timesheet.setHours(intArray);
 
         if(!timesheetService.exist(timesheet)) {
             this.timesheetService.save(timesheet);

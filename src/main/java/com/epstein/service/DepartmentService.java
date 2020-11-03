@@ -14,6 +14,7 @@ public class DepartmentService {
 
     @Autowired private DepartmentRepository departmentRepository;
     @Autowired private UserService userService;
+    @Autowired private RoleService roleService;
 
     public Department saveDepartment(Department department) {
         return departmentRepository.save(department);
@@ -46,9 +47,9 @@ public class DepartmentService {
     public Department updateDepartmentAndSuperiorRole(Department department) {
         User currSuperior = userService.getUserById(this.getDepartmentById(department.getId()).getSuperiorId());
         User newSuperior = userService.getUserById(department.getSuperiorId());
-        if(currSuperior.getId() != newSuperior.getId() && newSuperior.getRole().equals(RoleService.USER)) {
-            newSuperior.setRole(RoleService.MANAGER);
-            currSuperior.setRole(RoleService.USER);
+        if(currSuperior.getId() != newSuperior.getId() ) {
+            newSuperior.setRole(roleService.MANAGER());
+            currSuperior.setRoles( currSuperior.getRolesClass().remove(roleService.MANAGER()));
             this.userService.updateUser(newSuperior);
             this.userService.updateUser(currSuperior);
         }

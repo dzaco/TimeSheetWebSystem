@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="content">
+    <div class="container">
+        <div th:if="${dangerMsg}" th:text="${dangerMsg}" class="alert alert-danger"></div>
+
+            <div class="name-header">
+                <div class="circ float-left">
+                    <div class="circ-initials">T</div>
+                </div>
+                <div class="name-label">Timesheet</div>
+
+            </div>
+            <div class="float-none"></div>
+            <br><br>
+            <table class="table">
+                <tbody>
+
+                <tr>
+                    <td>Projekt:</td>
+                    <td th:text="${ timesheet.getProject() }"></td>
+                </tr>
+
+                <tr>
+                    <td>Faza:</td>
+                    <td th:text="${ timesheet.getStage() }"></td>
+                </tr>
+
+                <tr>
+                    <td>Miesiąc:</td>
+                    <td th:text="${ timesheet.getMonth() }"></td>
+                </tr>
+
+                <tr>
+                    <td>Kalendarz:</td>
+                    <td th:include="fragments/full-calendar-static :: content">
+
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+
+    </div>
+</div>
+
+</body>
+</html>

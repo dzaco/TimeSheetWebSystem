@@ -10,12 +10,12 @@
 <div th:fragment="content">
     <div class="container">
 
-        <form action="#" th:action='${"/departments/get/"+ thisDepartment.getId() +"/edit"}' th:object="${departmentDTO}" method="post">
+        <form action="#" th:action='${"/departments/get/"+ department.getId() +"/edit"}' th:object="${departmentDTO}" method="post">
             <div class="name-header">
                 <div class="circ float-left">
                     <div class="circ-initials">D</div>
                 </div>
-                <div th:text='${thisDepartment.getName()}' class="name-label">Name</div>
+                <div th:text='${department.getName()}' class="name-label">Name</div>
                 <button type="button" class="btn btn-outline-danger  float-right" data-toggle="modal"
                         data-target="#exampleModal"><i class="icon-trash"></i>Usuń
                 </button>
@@ -28,20 +28,20 @@
                 <tbody>
                 <tr>
                     <td><i class="icon-sort-numeric"></i>Numer ID:</td>
-                    <td th:text="${thisDepartment.getId()}"></td>
+                    <td th:text="${department.getId()}"></td>
                 </tr>
 
                 <tr>
                     <td><i class="icon-sitemap"></i>Nazwa:</td>
                     <td>
                         <th:block th:if="${blockList}">
-                            <input th:if='${blockList.contains("name")}' class="form-control form-control-sm" type="text" th:value="${thisDepartment.getName()}"
+                            <input th:if='${blockList.contains("name")}' class="form-control form-control-sm" type="text" th:value="${department.getName()}"
                                    name="name" disabled>
-                            <input th:unless='${blockList.contains("name")}' class="form-control form-control-sm" type="text" th:value="${thisDepartment.getName()}"
+                            <input th:unless='${blockList.contains("name")}' class="form-control form-control-sm" type="text" th:value="${department.getName()}"
                                    name="name">
                         </th:block>
                         <th:block th:unless="${blockList}">
-                            <input class="form-control form-control-sm" type="text" th:value="${thisDepartment.getName()}"
+                            <input class="form-control form-control-sm" type="text" th:value="${department.getName()}"
                                    name="name">
                         </th:block>
                     </td>
@@ -54,7 +54,7 @@
                         <select class="form-control form-control-sm" name="superiorId">
                             <option th:each="user : ${users}"
                                     th:value="${user.getId()}" th:text="${user.getName()}"
-                                    th:selected="${user.getId() == thisDepartment.getSuperior().getId()}"></option>
+                                    th:selected="${user.getId() == department.getSuperior().getId()}"></option>
                         </select>
                     </td>
                 </tr>

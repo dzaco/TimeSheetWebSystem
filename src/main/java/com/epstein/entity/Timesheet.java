@@ -5,7 +5,9 @@ import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
@@ -163,7 +165,7 @@ public class Timesheet {
                 this.day26, this.day27, this.day28, this.day29, this.day30, this.day31
         };
     }
-    public void setHours(int[] hours) {
+    public void setHours(Integer[] hours) {
         int i = 0;
         for( Field field : Timesheet.class.getDeclaredFields() ) {
             if(field.getName().startsWith("day")) {
@@ -184,5 +186,152 @@ public class Timesheet {
     @Override
     public String toString() {
         return "Timesheet-" + this.getMonth() + "-" + this.getId();
+    }
+
+
+
+    public List<String> toCsvRecord() {
+        List<String> record = new ArrayList<>();
+
+        record.add(String.valueOf(this.getId()));
+        record.add( this.getProject().getName());
+        record.add(String.valueOf(this.getStage()));
+        record.add( this.getUser().getName() );
+        record.add( this.getMonth() );
+        record.add(String.valueOf(this.getYear()) );
+        record.add(String.valueOf(this.getSum()));
+
+        for (Integer hour : this.getHours()) {
+            record.add( hour.toString() );
+        }
+
+        return record;
+    }
+
+
+    // na potrzeby csv
+
+    public Integer getDay1() {
+        return day1;
+    }
+
+    public Integer getDay2() {
+        return day2;
+    }
+
+    public Integer getDay3() {
+        return day3;
+    }
+
+    public Integer getDay4() {
+        return day4;
+    }
+
+    public Integer getDay5() {
+        return day5;
+    }
+
+    public Integer getDay6() {
+        return day6;
+    }
+
+    public Integer getDay7() {
+        return day7;
+    }
+
+    public Integer getDay8() {
+        return day8;
+    }
+
+    public Integer getDay9() {
+        return day9;
+    }
+
+    public Integer getDay10() {
+        return day10;
+    }
+
+    public Integer getDay11() {
+        return day11;
+    }
+
+    public Integer getDay12() {
+        return day12;
+    }
+
+    public Integer getDay13() {
+        return day13;
+    }
+
+    public Integer getDay14() {
+        return day14;
+    }
+
+    public Integer getDay15() {
+        return day15;
+    }
+
+    public Integer getDay16() {
+        return day16;
+    }
+
+    public Integer getDay17() {
+        return day17;
+    }
+
+    public Integer getDay18() {
+        return day18;
+    }
+
+    public Integer getDay19() {
+        return day19;
+    }
+
+    public Integer getDay20() {
+        return day20;
+    }
+
+    public Integer getDay21() {
+        return day21;
+    }
+
+    public Integer getDay22() {
+        return day22;
+    }
+
+    public Integer getDay23() {
+        return day23;
+    }
+
+    public Integer getDay24() {
+        return day24;
+    }
+
+    public Integer getDay25() {
+        return day25;
+    }
+
+    public Integer getDay26() {
+        return day26;
+    }
+
+    public Integer getDay27() {
+        return day27;
+    }
+
+    public Integer getDay28() {
+        return day28;
+    }
+
+    public Integer getDay29() {
+        return day29;
+    }
+
+    public Integer getDay30() {
+        return day30;
+    }
+
+    public Integer getDay31() {
+        return day31;
     }
 }

@@ -1,7 +1,10 @@
 package com.epstein.service;
 
+import com.epstein.entity.Role;
 import com.epstein.entity.User;
 import com.epstein.dto.UserDTO;
+import com.epstein.model.Roles;
+import com.epstein.repository.RoleRepository;
 import com.epstein.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,10 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserService  implements UserDetailsService {
@@ -24,6 +24,8 @@ public class UserService  implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private RoleRepository roleRepository;
     @Autowired
     private DepartmentService departmentService;
     @Autowired
@@ -78,7 +80,7 @@ public class UserService  implements UserDetailsService {
         existingUser.setDepartment(user.getDepartment());
         existingUser.setPosition(user.getPosition());
         existingUser.setContract(user.getContract());
-        existingUser.setRole(user.getRole());
+        existingUser.setRoles(user.getRolesClass());
         existingUser.setEmploymentTime(user.getEmploymentTime());
         existingUser.setActive(user.isActive());
         return userRepository.save(existingUser);
@@ -96,7 +98,18 @@ public class UserService  implements UserDetailsService {
         user.setEmail(form.getEmail());
         user.setDepartment( departmentService.getDepartmentById(form.getDepartmentId()) );
         user.setPosition(form.getPosition());
-        user.setRole(form.getRole());
+//        Arrays.stream(
+//                form.getRoles())
+//                .forEach( role -> {
+//                    Role entity = roleRepository.findByRole(role);
+//                    user.setRole(entity);
+//                });
+        Roles roles = new Roles(new HashSet<>());
+        for (String stringRole : form.getRoles()) {
+            Role entityRole = roleRepository.findByRole(stringRole);
+            roles.add(entityRole);
+        }
+        user.setRoles(roles);
         user.setContract( contractService.getContractById(form.getContractId()) );
         user.setEmploymentTime(form.getEmploymentTime());
         user.setActive(form.isActive());
@@ -112,7 +125,14 @@ public class UserService  implements UserDetailsService {
         user.setPassword( this.passwordEncoder.encode(form.getPassword()) );
         user.setDepartment( departmentService.getDepartmentById(form.getDepartmentId()) );
         user.setPosition(form.getPosition());
-        user.setRole(form.getRole());
+        Arrays.stream(
+                form.getRoles())
+                .forEach( role -> {
+                    Role entity = roleRepository.findByRole(role);
+                    user.setRole(entity);
+                });
+
+
         user.setContract( contractService.getContractById(form.getContractId()) );
         user.setEmploymentTime(form.getEmploymentTime());
         user.setActive(true);
@@ -150,16 +170,24 @@ public class UserService  implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = this.userRepository.findByEmail(email);
         if(user == null) throw new UsernameNotFoundException("Nieprawidłowy email lub hasło");
+        Roles roles = new Roles( roleRepository.findByUserId( user.getId() ) );
+
+        user.setRoles(roles);       // todo rozwiazanie dziala ale jest brzydkie - User nie zczytuje poprawnie roles
 
         this.logged = user;
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),
-                this.mapRolesToAuthorities(user.getRole()) );
+                this.mapRolesToAuthorities(roles) );
     }
 
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(String role) {
-        return Collections.singleton(new SimpleGrantedAuthority(role));     //ToDo user moze miec wiecej role - trzeba dodac nowa tablice user_roles
+    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Roles roles) {
+        List<GrantedAuthority> list = new ArrayList<>();
+        for (Role role : roles) {
+            GrantedAuthority auth = new SimpleGrantedAuthority(role.getRole());
+            list.add(auth);
+        }
+        return list;
     }
 
     public void passwordReset( int id) {

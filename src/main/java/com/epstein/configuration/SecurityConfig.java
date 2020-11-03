@@ -26,13 +26,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
 
                 .antMatchers("/users/**")
-                    .hasAnyAuthority(roleService.getHighRoles())
+                    .hasAnyAuthority(roleService.getHighRoles().toArray() )
                 .antMatchers("/timesheets/**")
-                    .hasAnyAuthority(roleService.getRoles())
+                    .hasAnyAuthority(roleService.getRoles().toArray())
                 .antMatchers("/**/add/*")
-                    .hasAnyAuthority(roleService.getHighRoles())
+                    .hasAnyAuthority(roleService.getHighRoles().toArray())
                 .antMatchers("/**/edit/*")
-                    .hasAnyAuthority(roleService.getHighRoles())
+                    .hasAnyAuthority(roleService.getHighRoles().toArray())
 //                .antMatchers("/**/delete/*")
 //                    .hasAnyAuthority(roleService.getHighRoles())
 

@@ -1,32 +1,43 @@
 package com.epstein.service;
 
+import com.epstein.entity.Role;
+import com.epstein.model.Roles;
+import com.epstein.repository.RoleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 @Service
 public class RoleService {
 
-    public static final String USER = "USER";
-    public static final String MANAGER = "MANAGER";
-    public static final String ACCOUNTANT = "ACCOUNTANT";
-    public static final String CONTRACT = "CONTRACT";
-    public static final String ADMIN = "ADMIN";
+    @Autowired private RoleRepository roleRepository;
 
-    public List<String> getRolesList() {
-        return Arrays.asList( this.getRoles() );
+    public Role USER() {
+        return this.roleRepository.findByRole("USER");
+    }
+    public Role MANAGER() {
+        return this.roleRepository.findByRole("MANAGER");
+    }
+    public Role ACCOUNTANT() {
+        return this.roleRepository.findByRole("ACCOUNTANT");
+    }
+    public Role CONTRACT() {
+        return this.roleRepository.findByRole("CONTRACT");
+    }
+    public Role ADMIN() {
+        return this.roleRepository.findByRole("ADMIN");
+    }
 
-    }
-    public String[] getRoles() {
-        return new String[]{ USER, MANAGER, ACCOUNTANT, CONTRACT, ADMIN };
+    public Roles getRoles() {
+        return new Roles( roleRepository.findAll() );
     }
 
-    public String[] getHighRoles() {
-        return new String[] {MANAGER, ACCOUNTANT, ADMIN};
-    }
-    public List<String> getHighRolesList() {
-        return Arrays.asList( getHighRoles() );
+    public Roles getHighRoles() {
+        Collection<Role> collection = Arrays.asList(MANAGER(), ACCOUNTANT(), ADMIN());
+        return new Roles(collection);
     }
 
 

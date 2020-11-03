@@ -33,7 +33,9 @@
 <!--            <small style="color:#818181;">ADMIN</small>-->
             <ul class="list-group access-admin">
                 <li class="list-group-item nav-item"><a href="/"><i class="icon-home"></i>Główna</a></li>
-                <li th:if="${roleService.getHighRolesList().contains( logged.getRole() )}" class="list-group-item nav-item dropdown">
+
+<!--                <li th:if="${ logged.getRoles().hasAnyRole( roleService.getHighRoles() ) }" class="list-group-item nav-item dropdown">-->
+                <li class="list-group-item nav-item dropdown">
                     <div class="btn-group">
                         <a role="button" href="/users/get"><i class="icon-users"></i>Pracownicy</a>
                         <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>

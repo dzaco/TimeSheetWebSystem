@@ -56,4 +56,8 @@ public class TimesheetService {
 
         return count > 0;
     }
+
+    public List<Timesheet> getTimesheetsInProject(int id) {
+        return this.timesheetRepository.findByProjectId(id);
+    }
 }

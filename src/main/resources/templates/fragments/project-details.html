@@ -60,8 +60,12 @@
         </table>
     </div>
 
-    <div class="container" th:include="fragments/users :: content">
-    </div>
+    <div class="container" th:include="fragments/users :: content"> </div>
+    <a th:href="${'/projects/get/'+ project.getId() +'/csv'}">
+        <i class="icon-right-hand"></i><i class="icon-doc-text"></i>Pobierz CSV
+    </a>
+    <div class="container" th:include="fragments/timesheets :: content"> </div>
+
 </div>
 
 </body>

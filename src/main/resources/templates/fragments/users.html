@@ -48,7 +48,7 @@
             </tbody>
         </table>
         <hr>
-        <a th:if="${ withAddButton }" href="/users/add" role="button" class="btn btn-success float-right">Dodaj nowego pracownika</a>
+        <a th:if="${ withAddButton || logged.getRoles().hasRole('ADMIN') }" href="/users/add" role="button" class="btn btn-success float-right">Dodaj nowego pracownika</a>
     </div>
 </div>
 </body>

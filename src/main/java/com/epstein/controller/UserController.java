@@ -1,18 +1,26 @@
 package com.epstein.controller;
 
-import com.epstein.configuration.ModelConfig;
 import com.epstein.entity.Department;
 import com.epstein.entity.Project;
+import com.epstein.entity.Timesheet;
 import com.epstein.entity.User;
 import com.epstein.dto.UserDTO;
 import com.epstein.factory.ModelFactory;
 import com.epstein.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
+import org.supercsv.io.CsvBeanWriter;
+import org.supercsv.io.ICsvBeanWriter;
+import org.supercsv.prefs.CsvPreference;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 @Controller @RequestMapping("users")
 public class UserController {
@@ -99,8 +107,10 @@ public class UserController {
 
     @PostMapping("/add")
     public RedirectView postAdd(@ModelAttribute UserDTO userDTO, Model model) {
-        this.userService.updateUser( userService.getUserFromForm(userDTO,true));
-        model = modelFactory.setModel(model).create();
+        //this.userService.updateUser( userService.getUserFromForm(userDTO,true));
+        //model = modelFactory.setModel(model).create();
+
+        this.userService.saveUser(this.userService.getUserFromForm(userDTO,true));
         return new RedirectView("/users/get");
     }
 
@@ -115,6 +125,14 @@ public class UserController {
         else{
             return new RedirectView("/users/getAllUserItems/"+id+"/edit");
         }
+    }
+
+    @GetMapping("/rehire/{id}")
+    public RedirectView rehireUser(@PathVariable int id, Model model) {
+        User user = this.userService.getUserById(id);
+        user.setActive(true);
+        this.userService.updateUser(user);
+        return new RedirectView("/users/get/id");
     }
 
     @GetMapping("/getAllUserItems/{id}/edit")
@@ -154,5 +172,17 @@ public class UserController {
 
         return new RedirectView("/departments/get");
     }
+
+
+    @GetMapping(value = "/get/{id}/csv")
+    public void getCSV(@PathVariable int id, HttpServletResponse response) throws IOException {
+        String csvFileName = "timesheet-" + this.userService.getUserById(id).getLastName() + ".csv";
+
+        List<Timesheet> timesheets = this.timesheetService.getUserTimesheets(id);
+
+        CsvService csvService = new CsvService(csvFileName, response);
+        csvService.createCSV(timesheets);
+
+     }
 
 }

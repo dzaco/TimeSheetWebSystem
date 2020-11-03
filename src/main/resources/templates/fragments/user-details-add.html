@@ -13,7 +13,7 @@
                 <div class="circ float-left">
                     <div class="circ-initials"><i class="icon-user"></i></div>
                 </div>
-                <div class="name-label">Name</div>
+                <div class="name-label">Nowy Pracownik</div>
 
                 <button type="submit" class="btn btn-outline-success float-right">Zapisz</button>
             </div>
@@ -73,10 +73,24 @@
                 <tr>
                     <td><i class="icon-key"></i>Uprawnienia:</td>
                     <td>
-                        <select class="form-control form-control-sm" name="role">
-                            <option th:each="role : ${roles}"
-                                    th:value="${role}" th:text="${role}"></option>
-                        </select>
+                        <div th:each=" role : ${ roleService.getRoles() }"
+                             class="form-check form-check-inline" >
+                            <input th:if="${ role.getRole().equals( 'USER' ) }"
+                                   type="radio" name="roles" checked
+                                   class="form-check-input"
+                                   th:id="${ 'ROLE_' + role }"
+                                   th:value="${ role }">
+
+                            <input th:unless="${ role.getRole().equals( 'USER' ) }"
+                                   type="checkbox" name="roles"
+                                   class="form-check-input"
+                                   th:id="${ 'ROLE_' + role }"
+                                   th:value="${ role }">
+
+
+                            <label class="form-check-label" th:for="${ 'ROLE_' + role }"
+                                   th:text="${ role }">role</label>
+                        </div>
                     </td>
                 </tr>
 

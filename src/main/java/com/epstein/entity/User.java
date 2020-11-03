@@ -1,54 +1,59 @@
 package com.epstein.entity;
 
-import javax.persistence.*;
-import java.util.ArrayList;
+import com.epstein.model.Roles;
 
-@Entity @Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "user_id") private int user_id;
-    @Column(name = "firstname") private String firstName;
-    @Column(name = "lastname") private String lastName;
-    @Column(name = "email") private String email;
-    @Column(name = "password") private String password;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "user_id")
+    private int id;
+    @Column(name = "firstname")
+    private String firstName;
+    @Column(name = "lastname")
+    private String lastName;
+    @Column(name = "email")
+    private String email;
+    @Column(name = "password")
+    private String password;
 
-    @ManyToOne @JoinColumn(name="department_id")
+    @ManyToOne
+    @JoinColumn(name = "department_id")
     private Department department;
 
-    @Column(name = "position") private String position;
+    @Column(name = "position")
+    private String position;
 
-    @ManyToOne @JoinColumn(name="contract_id")
+    @ManyToOne
+    @JoinColumn(name = "contract_id")
     private Contract contract;
 
-    @Column(name = "role") private String role;
-    @Column(name = "employment_time") private int employmentTime;
-    @Column(name = "active") private boolean active;
+    //private String role;
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
+
+    @Column(name = "employment_time")
+    private int employmentTime;
+    @Column(name = "active")
+    private boolean active;
 
 
-
-    public User() {    }
-
-    public User(String firstName, String lastName, String email, String password, Department department, String position, Contract contract, String role, int employmentTime, boolean active) {
-        this();
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.department = department;
-        this.position = position;
-        this.contract = contract;
-        this.role = role;
-        this.employmentTime = employmentTime;
-        this.active = active;
+    public User() {
     }
 
     public int getId() {
-        return user_id;
+        return id;
     }
 
     public void setId(int id) {
-        this.user_id = id;
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -67,11 +72,14 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getName() { return this.toString(); }
+    public String getName() {
+        return this.toString();
+    }
 
     public Department getDepartment() {
         return department;
     }
+
     public String getDepartmentName() {
         return department.getName();
     }
@@ -83,6 +91,7 @@ public class User {
     public Contract getContract() {
         return contract;
     }
+
     public String getContractName() {
         return contract.getName();
     }
@@ -115,12 +124,35 @@ public class User {
         this.position = position;
     }
 
-    public String getRole() {
-        return role;
+//    public String getRole() {
+//        return role;
+//    }
+//
+//    public void setRole(String role) {
+//        this.role = role;
+//    }
+
+
+    public Roles getRolesClass() {
+        return new Roles(roles);
     }
 
+    public Set<Role> getRoles() {
+        return this.roles;
+    }
+
+    public void setRoles(Roles roles) {
+        this.roles = roles;
+    }
+    public void setRole(Role role) {
+        if(this.roles == null )
+            this.roles = new Roles( new HashSet<>() );
+
+        if( !this.getRolesClass().hasRole(role) )
+            this.roles.add( role );
+    }
     public void setRole(String role) {
-        this.role = role;
+        this.setRole( new Role(role) );
     }
 
     public int getEmploymentTime() {

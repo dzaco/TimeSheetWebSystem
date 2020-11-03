@@ -24,4 +24,8 @@ public interface TimesheetRepository extends JpaRepository<Timesheet,Integer> {
             "AND t.year = :year",
             nativeQuery = true)
     Integer findAllWhere(int userId, int projectId, int stage, int month, int year);
+
+    @Query(value = "SELECT * FROM db_epstein.timesheets WHERE project_id = :id" ,
+            nativeQuery = true)
+    List<Timesheet> findByProjectId(int id);
 }
