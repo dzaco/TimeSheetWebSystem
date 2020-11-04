@@ -1,102 +1,66 @@
 package com.epstein.entity;
 
-import com.epstein.model.DateInfo;
-
 import javax.persistence.*;
-import java.sql.Date;
-import java.time.LocalDate;
 
 @Entity @Table(name = "message")
 public class Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int message_id;
+    private int id;
+    private String code;
+    private String title;
+    private String text;
+    private String link;
 
-    @OneToOne @JoinColumn(name = "user_id")
-    private User user;
-
-    @OneToOne @JoinColumn(name = "message_schema_id")
-    private MessageSchema messageSchema;
-
-    @Column(name = "date") private Date date;
-    @Column(name = "end_date") private Date endDate;
-
-    @Column(name = "status") private int status;
+    public Message() {    }
 
     public int getId() {
-        return message_id;
+        return id;
     }
 
     public void setId(int id) {
-        this.message_id = id;
+        this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public String getCode() {
+        return code;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public MessageSchema getMessageSchema() {
-        return messageSchema;
-    }
-
-    public void setMessageSchema(MessageSchema messageSchema) {
-        this.messageSchema = messageSchema;
-    }
-
-    public DateInfo getDate() {
-        return new DateInfo( date.toLocalDate() );
-    }
-    public void setDate(LocalDate date) {
-        this.date = Date.valueOf(date);
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = Date.valueOf(endDate);
-    }
-
-    public int getStatus() {
-        return status;
-    }
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-
-    public String getText() {
-        return this.getMessageSchema().getText();
-    }
-    public void setText(String text) {
-        this.getMessageSchema().setText(text);
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getTitle() {
-        return this.getMessageSchema().getTitle();
+        return title;
     }
+
     public void setTitle(String title) {
-        this.getMessageSchema().setTitle(title);
+        this.title = title;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     public String getLink() {
-        return this.getMessageSchema().getLink();
+        return link;
     }
+
     public void setLink(String link) {
-        this.getMessageSchema().setLink(link);
-    }
-    public boolean hasLink() {
-        return this.getMessageSchema().hasLink();
+        this.link = link;
     }
 
     @Override
     public String toString() {
-        return this.getText();
+        return text;
     }
 
+    public boolean hasLink() {
+        return this.link != null;
+    }
 }

@@ -33,7 +33,7 @@ public class TestController {
         model.addAttribute("logged", this.userService.getLogged());
         model.addAttribute("roleService", roleService);
 
-        model.addAttribute("messages", this.messageService.getAll());
+
         model.addAttribute("page", "messages");
 
         return "base";

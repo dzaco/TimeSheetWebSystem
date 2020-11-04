@@ -34,8 +34,7 @@
             <ul class="list-group access-admin">
                 <li class="list-group-item nav-item"><a href="/"><i class="icon-home"></i>Główna</a></li>
 
-<!--                <li th:if="${ logged.getRoles().hasAnyRole( roleService.getHighRoles() ) }" class="list-group-item nav-item dropdown">-->
-                <li class="list-group-item nav-item dropdown">
+                <li th:if="${ roleService.hasHighRoles(logged) }" class="list-group-item nav-item dropdown">
                     <div class="btn-group">
                         <a role="button" href="/users/get"><i class="icon-users"></i>Pracownicy</a>
                         <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
@@ -45,17 +44,17 @@
                         </div>
                     </div>
                 </li>
-                <li class="list-group-item nav-item"><a href="/departments/get"><i class="icon-sitemap"></i>Działy</a></li>
+                <li th:if="${ roleService.hasHighRoles(logged) }" class="list-group-item nav-item"><a href="/departments/get"><i class="icon-sitemap"></i>Działy</a></li>
                 <li class="list-group-item nav-item"><a href="/projects/get"><i class="icon-cubes"></i>Projekty</a></li>
                 <li class="list-group-item nav-item dropdown">
 <!--                    <a href="/timesheets/get"><i class="icon-calendar"></i>TimeSheets</a>-->
                     <div class="btn-group">
-                        <a role="button" href="/timesheets/get"><i class="icon-calendar"></i>Timesheets</a>
-                        <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-                        <div class="dropdown-menu">
-                            <!-- Dropdown menu links -->
-                            <a class="dropdown-item" href="/timesheets/add">Dodaj timesheet</a>
-                        </div>
+                        <a role="button" href="/timesheets/add"><i class="icon-calendar"></i>Timesheets</a>
+<!--                        <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>-->
+<!--                        <div class="dropdown-menu">-->
+<!--                            &lt;!&ndash; Dropdown menu links &ndash;&gt;-->
+<!--                            <a class="dropdown-item" href="/timesheets/add">Dodaj timesheet</a>-->
+<!--                        </div>-->
                     </div>
                 </li>
                 <li class="list-group-item nav-item"><a href="/logout"><i class="icon-off"></i>Wyloguj</a></li>

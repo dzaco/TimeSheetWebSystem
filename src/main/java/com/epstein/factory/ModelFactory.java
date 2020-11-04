@@ -1,5 +1,6 @@
 package com.epstein.factory;
 
+import com.epstein.entity.Message;
 import com.epstein.entity.Timesheet;
 import com.epstein.model.DateInfo;
 import com.epstein.service.*;
@@ -9,6 +10,7 @@ import org.springframework.ui.Model;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 /**
  * Klasa slużąca do ujednolicenia nazw obiektów zawartych w modelu oraz łatwiejszego ich zastosowania.
@@ -92,7 +94,7 @@ public class ModelFactory {
         return this;
     }
     public ModelFactory withUserMessages(int userID) {
-        model.addAttribute("messages", messageService.getUserMessages(userID));
+        //model.addAttribute("messages", messageService.getUserMessages(userID));
         return this;
     }
 
@@ -133,6 +135,11 @@ public class ModelFactory {
 
     public ModelFactory withTimesheetsInProject(int id) {
         this.model.addAttribute("timesheets", this.timesheetService.getTimesheetsInProject(id) );
+        return this;
+    }
+
+    public ModelFactory withMessages(List<Message> messages) {
+        this.model.addAttribute("messages", messages );
         return this;
     }
 }

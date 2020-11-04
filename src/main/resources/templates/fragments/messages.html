@@ -9,14 +9,14 @@
     <div class="container">
         <th:block th:if="${messages}" th:each="message : ${messages}">
             <form class="card" th:action="${ '/messages/delete/' + message.getId() }" method="get">
-                <h5 th:text="${ message.getDate() }" class="card-header" >Data</h5>
+<!--                <div class="card-header">Featured</div>-->
+                <h5 th:text="${ message.getTitle() }" class="card-header">Tytuł</h5>
                 <div class="card-body">
-                    <h5 th:text="${ message.getTitle() }" class="card-title">Tytuł</h5>
                     <p th:text="${ message }" class="card-text">Tekst</p>
                     <a th:if="${ message.hasLink() }" role="button" class="btn btn btn-outline-secondary"
                        th:href="${ message.getLink() }">Przejdź</a>
-                    <input type="submit" value="Niepokazuj więcej" role="button"
-                           class="btn btn btn-outline-secondary float-right">
+<!--                    <input type="submit" value="Niepokazuj więcej" role="button"-->
+<!--                           class="btn btn btn-outline-secondary float-right">-->
                 </div>
             </form>
             <br><br>

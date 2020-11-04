@@ -36,7 +36,7 @@ public class MessageController {
 
     @GetMapping("/delete/{id}")
     public RedirectView delete(@PathVariable int id, Model model) {
-        this.messageService.setStatus(0, id);
+        // todo
 
         return new RedirectView("/");
     }

@@ -1,6 +1,7 @@
 package com.epstein.service;
 
 import com.epstein.entity.Role;
+import com.epstein.entity.User;
 import com.epstein.model.Roles;
 import com.epstein.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,10 @@ public class RoleService {
     public Roles getHighRoles() {
         Collection<Role> collection = Arrays.asList(MANAGER(), ACCOUNTANT(), ADMIN());
         return new Roles(collection);
+    }
+
+    public boolean hasHighRoles( User user ) {
+        return user.getRolesClass().hasAnyRole( this.getHighRoles() );
     }
 
 

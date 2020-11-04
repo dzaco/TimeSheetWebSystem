@@ -1,13 +1,16 @@
 package com.epstein.service;
 
 import com.epstein.entity.Timesheet;
+import com.epstein.entity.User;
 import com.epstein.repository.TimesheetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.OrderBy;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TimesheetService {
@@ -59,5 +62,9 @@ public class TimesheetService {
 
     public List<Timesheet> getTimesheetsInProject(int id) {
         return this.timesheetRepository.findByProjectId(id);
+    }
+
+    public Optional<Timesheet> getTimesheetByUserAndDate(User user, LocalDate date) {
+        return this.timesheetRepository.findByUserIdAndDate(user.getId(), date.getYear(), date.getMonth().getValue() );
     }
 }
