@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.OrderBy;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -55,9 +56,25 @@ public class TimesheetService {
                 timesheet.getStage(),
                 timesheet.getMonthValue(),
                 timesheet.getYear()
-        );
+        ).size();
 
         return count > 0;
+    }
+
+    public Optional<Timesheet> getTimesheet(Timesheet timesheet) {
+        List<Timesheet> list = this.timesheetRepository.findAllWhere(
+                timesheet.getUser().getId(),
+                timesheet.getProject().getId(),
+                timesheet.getStage(),
+                timesheet.getMonthValue(),
+                timesheet.getYear()
+        );
+
+        if( list.size() == 1)
+            return Optional.of(list.get(0));
+        else
+            return Optional.empty();
+
     }
 
     public List<Timesheet> getTimesheetsInProject(int id) {

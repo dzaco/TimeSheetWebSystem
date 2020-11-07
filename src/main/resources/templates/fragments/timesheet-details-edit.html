@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="content">
+    <div class="container">
+        <div th:if="${dangerMsg}" th:text="${dangerMsg}" class="alert alert-danger"></div>
+        <form action="#" th:action='${"/timesheets/get/" + timesheet.getId() + "/edit"}' method="post">
+
+            <div class="name-header">
+                <div class="circ float-left">
+                    <div class="circ-initials">T</div>
+                </div>
+                <div class="name-label">Timesheet</div>
+
+                <button type="submit" class="btn btn-outline-success float-right">Zapisz</button>
+            </div>
+            <div class="float-none"></div>
+            <br><br>
+            <table class="table">
+                <tbody>
+
+                <tr>
+                    <td>Projekt:</td>
+                    <td>
+                        <select class="form-control form-control-sm" name="projectId">
+                            <option th:each="project : ${projects}"
+                                    th:value="${project.getId()}" th:text="${project.getName()}"
+                                    th:selected="${ timesheet.getProject().getId() == project.getId() }">
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Faza:</td>
+                    <td>
+                        <select class="form-control form-control-sm" name="stage">
+                            <option th:each="num : ${#numbers.sequence(1,5)}"
+                                    th:value="${num}" th:text="${num}"
+                                    th:selected="${ timesheet.getStage() == num }">
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Miesiąc:</td>
+                    <td>
+                        <select class="form-control form-control-sm" name="month">
+                            <option th:value="${ now.getPreviousMonth().getMonthAndYear() }"
+                                    th:text="${ now.getPreviousMonth().getMonthAndYear() }"
+                                    th:selected="${ timesheet.getMonthAndYear() == now.getPreviousMonth().getMonthAndYear() }">
+                            </option>
+                            <option th:value="${now.getMonthAndYear()}"
+                                    th:text="${now.getMonthAndYear() }"
+                                    th:selected="${ timesheet.getMonthAndYear() == now.getMonthAndYear() }">
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Kalendarz:</td>
+                    <td th:include="fragments/full-calendar :: content">
+
+                    </td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

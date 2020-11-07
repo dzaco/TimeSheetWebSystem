@@ -31,7 +31,10 @@
                             <input th:if='${now.isWeekend(week, day)}' hidden
                                    type="number" class="form-control form-control-sm" name="date" >
                             <input th:unless='${now.isWeekend(week, day)}'
-                                   type="number" class="form-control form-control-sm" name="date" >
+                                   type="number" class="form-control form-control-sm" name="date"
+                                   th:value="${ timesheet.getId() != 0 ?
+                                   timesheet.getHours(7*week + day - now.offSet()) != 0 ? timesheet.getHours(7*week + day - now.offSet()) : null
+                                   : null}">
                         </th:block>
 
                     </td>

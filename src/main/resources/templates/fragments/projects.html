@@ -38,7 +38,7 @@
             </tbody>
         </table>
         <hr>
-        <a th:if="${ withAddButton }" href="/projects/add" role="button" class="btn btn-success float-right">Dodaj nowy projekt</a>
+        <a th:if="${ withAddButton || logged.getRoles().hasRole('ADMIN') }" href="/projects/add" role="button" class="btn btn-success float-right">Dodaj nowy projekt</a>
     </div>
 </div>
 </body>

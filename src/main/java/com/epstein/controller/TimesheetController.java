@@ -10,10 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 @Controller @RequestMapping("/timesheets")
@@ -45,6 +47,7 @@ public class TimesheetController {
 
         model = modelFactory.setModel(model)
                 .withTimesheet(id)
+                .withDate()
                 .create();
 
         model.addAttribute("page", "timesheet-details");
@@ -52,18 +55,35 @@ public class TimesheetController {
     }
 
     @GetMapping("/get/{id}/edit")
-    public String edit(int id, Model model) {
+    public String edit(@PathVariable int id, Model model) {
 
         model = modelFactory.setModel(model)
                 .withTimesheet(id)
+                .withAllProjects()
+                .withDate()
                 .create();
 
-        model.addAttribute("page", "department-details-edit");
+        model.addAttribute("page", "timesheet-details-edit");
         return "base";
     }
 
+    @PostMapping("/get/{id}/edit")
+    public RedirectView postEdit(@PathVariable int id,
+                                 @RequestParam("projectId") int projectId,
+                                 @RequestParam("stage") int stage,
+                                 @RequestParam("month") String month,
+                                 @RequestParam(value = "date") Integer[] date,
+                                 Model model) {
 
-    @GetMapping("/add")
+        Timesheet timesheet = this.timesheetService.getTimesheetById(id);
+        timesheet.setHours(date);
+        timesheetService.save( timesheet );
+
+        return new RedirectView("/timesheets/get/" + timesheet.getId() );
+    }
+
+
+        @GetMapping("/add")
     public String add(Model model) {
         model.addAttribute("timesheet", new Timesheet());
 
@@ -90,6 +110,13 @@ public class TimesheetController {
         timesheet.setMonthAndYear( month );
         timesheet.setUser( this.userService.getLogged() );
 
+        if(timesheetService.exist(timesheet)) {
+            model.addAttribute("dangerMsg", "Timesheet już istnieje. Przechodze do edytowania.");
+            Optional<Timesheet> toEdit = timesheetService.getTimesheet(timesheet);
+            if(toEdit.isPresent())
+                return this.edit(toEdit.get().getId(), model);
+        }
+
         List<Integer> hoursInDays = new ArrayList<>();
         for(String h : date ) {
             hoursInDays.add( h.isBlank() ? 0 : Integer.parseInt( h ));
@@ -106,7 +133,7 @@ public class TimesheetController {
 
         if(!timesheetService.exist(timesheet)) {
             this.timesheetService.save(timesheet);
-            return this.getAll(model);
+            return this.getById(timesheet.getId(), model);
             //return new RedirectView("/timesheets/get");
         }
         else {

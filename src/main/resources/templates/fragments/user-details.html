@@ -79,9 +79,6 @@
     </div>
 
     <!--    TimeSheets  -->
-    <a th:href="${'/users/get/'+ user.getId() +'/csv'}">
-        <i class="icon-right-hand"></i><i class="icon-doc-text"></i>Pobierz CSV
-    </a>
     <th:block th:replace="fragments/timesheets:: content"> </th:block>
 </div>
 

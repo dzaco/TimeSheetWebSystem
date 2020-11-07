@@ -112,7 +112,7 @@ public class UserService  implements UserDetailsService {
         user.setRoles(roles);
         user.setContract( contractService.getContractById(form.getContractId()) );
         user.setEmploymentTime(form.getEmploymentTime());
-        user.setActive(form.isActive());
+        user.setActive(true);
         return user;
     }
 

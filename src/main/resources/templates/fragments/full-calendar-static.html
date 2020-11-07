@@ -22,7 +22,7 @@
             </thead>
 
             <tbody>
-                <tr class="week" th:each="week : ${#numbers.sequence(0,4)}">
+                <tr class="week" th:each="week : ${#numbers.sequence(0,5)}">
                     <td class="day" th:each="day : ${#numbers.sequence(0,6)}">
                         <th:block th:if="${ (7*week + day - date.offSet() > 0) &&
                         (7*week + day - date.offSet() <= date.getLastDay() ) }" >
@@ -31,7 +31,9 @@
                             <input th:if='${date.isWeekend(week, day)}' hidden
                                    type="number" class="form-control form-control-sm" name="date" >
                             <input th:unless='${date.isWeekend(week, day)}'
-                                   th:value="${ timesheet.getHours()[7*week + day - date.offSet()] }"
+                                   th:value="${ timesheet.getId() != 0 ?
+                                   timesheet.getHours(7*week + day - now.offSet()) != 0 ? timesheet.getHours(7*week + day - now.offSet()) : null
+                                   : null}"
                                    type="number" class="form-control form-control-sm" name="date"
                                    disabled>
                         </th:block>

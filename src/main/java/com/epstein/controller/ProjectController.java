@@ -16,6 +16,8 @@ import org.supercsv.prefs.CsvPreference;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.*;
 
 @Controller @RequestMapping("/projects")
@@ -60,7 +62,7 @@ public class ProjectController {
         model.addAttribute("allUsers", this.userService.getUsers());
         model = modelFactory.setModel(model)
                 .withProject(id)
-                .withUsersInProject(id)
+                .withAllUsers()
                 .create();
 
         //TODO mozliwosc dodania i usuwania pracownikow z projektu
@@ -78,7 +80,9 @@ public class ProjectController {
     @GetMapping("/add")
     public String add(Model model) {
         model.addAttribute("project" , new Project());
-        model = modelFactory.setModel(model).create();
+        model = modelFactory.setModel(model)
+                .withAllUsers()
+                .create();
 
         model.addAttribute("page", "project-details-add");
         return "base";
@@ -89,6 +93,14 @@ public class ProjectController {
         model = modelFactory.setModel(model).create();
 
         this.projectService.update( postProject );
+        return new RedirectView("/projects/get");
+    }
+
+    @GetMapping("/close/{id}")
+    public RedirectView close(@PathVariable int id) {
+        Project project = this.projectService.getProjectById(id);
+        project.setEndDate( Date.valueOf(LocalDate.now()) );
+        this.projectService.save(project);
         return new RedirectView("/projects/get");
     }
 

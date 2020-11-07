@@ -26,7 +26,7 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     @Query(value = "SELECT * FROM users where department_id = :departmentId and active = :active", nativeQuery = true)
     List<User> getUsersInDepartment(@Param("departmentId") int departmentId, @Param("active") int active);
 
-    @Query(value = "Select * FROM users where user_id in (SELECT user_id FROM users_projects where project_id = :projectId)" ,nativeQuery = true)
+    @Query(value = "select * from users u where u.user_id in (SELECT t.user_id FROM timesheets t where t.project_id = :projectId ) and u.active = 1" ,nativeQuery = true)
     List<User> getUsersInProject(@Param("projectId") int projectId);
 
 

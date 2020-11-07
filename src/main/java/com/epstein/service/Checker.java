@@ -50,14 +50,13 @@ public class Checker {
         LocalDate firstDay = now.minusDays( now.getDayOfMonth() );
         Period period = Period.between( firstDay, now );
 
-        if(period.getDays() > 5 && this.timesheetService.getTimesheetByUserAndDate(this.userService.getLogged(), now.minusMonths(1)).isEmpty()){
+        if(period.getDays() > 3 && this.timesheetService.getTimesheetByUserAndDate(this.userService.getLogged(), now.minusMonths(1)).isEmpty()){
             return this.messageRepository.findByCode("timesheet");
         }
         else
             return Optional.empty();
 
     }
-
 
     public List<Message> checkForMessage() {
         List<Message> messages = new ArrayList<>();
@@ -66,6 +65,8 @@ public class Checker {
         this.addEndWorkTime().ifPresent(messages::add);
         return messages;
     }
+
+
 
 
 }

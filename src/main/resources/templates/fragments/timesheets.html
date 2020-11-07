@@ -10,16 +10,16 @@
         <div class="form-inline">
             <h3 class="mr-auto">Lista Timesheet'ów </h3>
 
-<!--            <form method="post" action="/timesheets/csv" th:object="${ container }">-->
-<!--                <input th:field="${ timesheetList }" th:value="${ timesheets }" type="hidden" />-->
-<!--                <button type="submit" class="btn">-->
-<!--                    <i class="icon-right-hand"></i><i class="icon-doc-text"></i>Pobierz CSV-->
-<!--                </button>-->
-
-<!--            </form>-->
-
             <input class="form-control" id="filterInput" type="text" placeholder="Szukaj..">
         </div>
+        <a th:if="${ project }" th:href="${'/projects/get/'+ project.getId() +'/csv'}">
+            <i class="icon-right-hand"></i><i class="icon-doc-text"></i>Pobierz CSV
+        </a>
+        <th:block th:unless="${ project }">
+            <a th:if="${ user }" th:href="${'/users/get/'+ user.getId() +'/csv'}">
+            <i class="icon-right-hand"></i><i class="icon-doc-text"></i>Pobierz CSV
+            </a>
+        </th:block>
         <table class="table table-hover">
             <thead>
             <tr>

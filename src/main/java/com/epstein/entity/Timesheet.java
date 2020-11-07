@@ -165,12 +165,25 @@ public class Timesheet {
                 this.day26, this.day27, this.day28, this.day29, this.day30, this.day31
         };
     }
+
+    public Integer getHours(int day) {
+        Integer[] h = this.getHours();
+        if(day < 1) day = 1;
+        else if(day > 31) day = 31;
+
+        return h[day - 1];
+    }
+
     public void setHours(Integer[] hours) {
+        if(hours.length < 31) {
+            hours = Arrays.copyOf(hours,31);
+        }
         int i = 0;
         for( Field field : Timesheet.class.getDeclaredFields() ) {
             if(field.getName().startsWith("day")) {
                 try {
-                    field.set(this, hours[i++]);
+                    Integer h = hours[i++];
+                    field.set(this, h != null ? h : 0);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
